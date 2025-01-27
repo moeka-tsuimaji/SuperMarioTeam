@@ -5,7 +5,11 @@
 #include "DxLib.h"
 
 //このコメントはカルヴィンが追加しました
+<<<<<<< Updated upstream
 //このコメントはカルヴィンがまた追加しました111111111111111111111111111111
+=======
+//邪魔なコメント
+>>>>>>> Stashed changes
 
 #define D_PLAYER_SPEED	(50.0f)
 
