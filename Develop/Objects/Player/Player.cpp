@@ -4,6 +4,8 @@
 #include "../../Utility/Application.h"
 #include "DxLib.h"
 
+//このコメントはカルヴィンが追加しました
+
 #define D_PLAYER_SPEED	(50.0f)
 
 Player* Player::instance = nullptr;
