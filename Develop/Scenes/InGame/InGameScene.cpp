@@ -59,6 +59,10 @@ void InGameScene::Initialize()
 	// ”wŒi‰æ‘œ‚Ì“Ç‚Ýž‚Ý
 	ResourceManager* rm = ResourceManager::GetInstance();
 	back_ground_image = rm->GetImages("Resource/Images/”z’u‘fÞ/NES---Super-Mario-Bros---World-1-1iC³”Åj.png")[0];
+	
+	// Šù‚ÉBGM‚ª—¬‚ê‚Ä‚¢‚ê‚ÎŽ~‚ß‚é
+	
+	
 	// BGM‚Ì“Ç‚Ýž‚Ý
 	back_ground_sound = rm->GetSounds("Resource/Sounds/BGM_MarioGround.wav");
 

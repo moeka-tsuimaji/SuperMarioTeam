@@ -131,6 +131,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Objects\Item\ItemBase.cpp" />
+    <ClCompile Include="Objects\Item\Mushroom.cpp" />
     <ClCompile Include="Objects\UI\Mario.cpp" />
     <ClCompile Include="Objects\Enemy\Kuribo.cpp" />
     <ClCompile Include="Objects\Block\Kai_block.cpp" />
@@ -176,6 +178,8 @@
     <ClCompile Include="Objects\UI\World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Objects\Item\ItemBase.h" />
+    <ClInclude Include="Objects\Item\Mushroom.h" />
     <ClInclude Include="Objects\UI\Mario.h" />
     <ClInclude Include="Objects\Enemy\Kuribo.h" />
     <ClInclude Include="Objects\Block\Kai_block.h" />

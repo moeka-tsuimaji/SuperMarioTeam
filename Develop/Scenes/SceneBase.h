@@ -17,6 +17,7 @@ enum class eSceneType
 	exit,
 };
 
+
 /// <summary>
 /// シーン基底クラス
 /// </summary>
@@ -146,6 +147,7 @@ public:
 		for (GameObjectManager* obj : object_list)
 		{
 			obj->Draw(screen_offset);
+			obj->DrawCollision(screen_offset);
 		}
 	}
 
@@ -181,6 +183,16 @@ public:
 	/// <param name="partner">2つ目のゲームオブジェクト</param>
 	virtual void CheckCollision(GameObjectManager* target, GameObjectManager* partner)
 	{
+		//オブジェクトタイプを確認し当たり判定同士が当たっているか確認する
+		if (!target->GetCollision().IsCheckHitTarget(partner->GetCollision().object_type))
+		{
+			return;
+		}
+		//当たり判定を確認
+		if (target->GetCollision().CheckCollision(partner->GetCollision()))
+		{
+			target->OnHitCollision(partner);
+		}
 	}
 
 public:
