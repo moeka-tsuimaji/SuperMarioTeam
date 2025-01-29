@@ -26,6 +26,8 @@ protected:
 	eMobilityType		mobility;		// 可動性
 	Vector2D            velocity;
 	bool                flip_flag;      //反転フラグ
+	bool				draw_collision_box;	//当たり判定を描画フラグ
+
 public:
 	GameObjectManager();
 	virtual ~GameObjectManager();
@@ -44,6 +46,10 @@ public:
 	/// </summary>
 	/// <param name="screen_offset">オフセット値</param>
 	virtual void Draw(const Vector2D& screen_offset) const;
+	/// <summary>
+	/// デバッグ用当たり判定描画処理
+	/// </summary>
+	virtual void DrawCollision(const Vector2D& screen_offset) const;
 	/// <summary>
 	/// 終了時処理
 	/// </summary>
@@ -92,7 +98,10 @@ public:
 	/// </summary>
 	/// <returns>可動性情報</returns>
 	const eMobilityType GetMobility() const;
-
+	/// <summary>
+	/// デバッグ用当たり判定表示フラグを設定する
+	/// </summary>
+	void SetDrawCollisionBox(bool flag);
 };
 
 

@@ -10,7 +10,8 @@ GameObjectManager::GameObjectManager() :
 	z_layer(0),
 	mobility(eMobilityType::Stationary),
 	velocity(0),
-	flip_flag(false)
+	flip_flag(false),
+	draw_collision_box(false)
 {
 
 }
@@ -46,6 +47,23 @@ void GameObjectManager::Draw(const Vector2D& screen_offset) const
 	// オフセット値を基に画像の描画を行う
 	Vector2D graph_location = this->location + screen_offset;
 	DrawRotaGraphF(graph_location.x, graph_location.y, 1.0, 0.0, image, TRUE, this->flip_flag);
+}
+
+/// <summary>
+/// デバッグ用当たり判定描画処理
+/// </summary>
+void GameObjectManager::DrawCollision(const Vector2D& screen_offset) const
+{
+	if (draw_collision_box)
+	{
+		//当たり判定の位置を取得する
+		Vector2D min = collision.GetPosition() - (collision.box_size / 2) + collision.pivot + screen_offset;
+		Vector2D max = collision.GetPosition() + (collision.box_size / 2) + collision.pivot + screen_offset;
+
+		//当たり判定を描画する
+		DrawBoxAA(min.x, min.y, max.x, max.y, GetColor(255, 0, 0), false);
+	}
+
 }
 
 /// <summary>
@@ -119,3 +137,10 @@ const eMobilityType GameObjectManager::GetMobility() const
 	return mobility;
 }
 
+/// <summary>
+/// デバッグ用当たり判定表示フラグを設定する
+/// </summary>
+void GameObjectManager::SetDrawCollisionBox(bool flag)
+{
+	draw_collision_box = flag;
+}

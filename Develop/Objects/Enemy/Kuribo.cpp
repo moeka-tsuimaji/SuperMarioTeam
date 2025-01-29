@@ -46,8 +46,26 @@ void Kuribo::Initialize()
 	//collision.hit_object_type.push_back(eObjectType::special);
 	//collision.radius = (D_OBJECT_SIZE - 1.0f) / 2.0f;
 
+
+	/******************************************************************************************************************/
+
+	//当たり判定を設定
+	collision.SetSize(D_OBJECT_SIZE, D_OBJECT_SIZE);
+
+	//オブジェクトタイプを設定
+	collision.SetObjectType(eObjectType::eEnemy);
+
+	//当たるオブジェクトタイプを設定
+	collision.SetHitObjectType({ eObjectType::ePlayer, eObjectType::eGround });
+
+	//当たり判定の描画フラグ
+	SetDrawCollisionBox(true);
+
+	/******************************************************************************************************************/
+
+
 	// レイヤーの設定
-	z_layer = 5;
+	z_layer = 4;
 
 	// 可動性の設定
 	mobility = eMobilityType::Movable;
@@ -66,6 +84,12 @@ void Kuribo::Initialize()
 
 void Kuribo::Update(float delta_second)
 {
+	//当たり判定の位置を取得する
+	Vector2D collisionPosition = collision.GetPosition();
+	//当たり判定の位置を更新する
+	collision.SetPosition(location);
+
+
 	//入力状態の取得
 	Movement(delta_second);
 	//アニメーションの取得
@@ -99,7 +123,11 @@ void Kuribo::Finalize()
 /// <param name="hit_object">当たったゲームオブジェクトのポインタ</param>
 void Kuribo::OnHitCollision(GameObjectManager* hit_object)
 {
-
+	if (hit_object->GetCollision().object_type == eObjectType::ePlayer)
+	{
+		//kuriboを消滅する
+		owner_scene->DestroyObject(this);
+	}
 }
 
 /// <summary>

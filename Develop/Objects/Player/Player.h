@@ -56,6 +56,7 @@ public:
 	virtual void Draw(const Vector2D& screen_offset) const override;
 	virtual void Finalize() override;
 
+	
 	/// <summary>
 	/// “–‚½‚è”»’è’Ê’mˆ—
 	/// </summary>

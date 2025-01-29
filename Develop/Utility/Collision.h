@@ -17,24 +17,38 @@ enum class eObjectType : unsigned char
 class Collision
 {
 public:
-	bool is_blocking;
-	Vector2D box_size;
-	Vector2D pivot;
-	eObjectType object_type;
-	std::vector<eObjectType> hit_object_type;
+	bool is_blocking;	//オブジェクトの動きが止められているか確認する変数
+	Vector2D box_size;	//当たり判定の大きさ
+	Vector2D pivot;		//当たり判定とオブジェクトのオフセット
+	eObjectType object_type;	//オブジェクトのタイプ
+	std::vector<eObjectType> hit_object_type;	//当たる資格を持つオブジェクト
+
+private:
+	Vector2D position;
 
 public:
-	Collision() :
-		is_blocking(false),
-		object_type(eObjectType::eNone),
-		hit_object_type()
-	{
+	Collision();
+	~Collision();
 
-	}
-	~Collision()
-	{
-		hit_object_type.clear();
-	}
-	bool IsCheckHitTarget(eObjectType hit_object) const;
+	//当たり判定の位置設置
+	void SetPosition(const Vector2D& pos);
+
+	//当たり判定の位置の取得
+	const Vector2D& GetPosition() const;
+
+	//当たり判定の大きさ設定
+	void SetSize(const float& width, const float& height);
+
+	//オブジェクトタイプの設定
+	void SetObjectType(const eObjectType& FUNC_objecttype);
+
+	//当たるオブジェクトタイプの設定
+	void SetHitObjectType(const std::vector<eObjectType>& FUNC_hitobjecttype);
+
+	//当たったオブジェクトのタイプ確認
+	bool IsCheckHitTarget(eObjectType FUNC_hitobject) const;
+
+	//当たり判定同士が当たっているか確認
+	bool CheckCollision(const Collision& other) const;
 };
 
