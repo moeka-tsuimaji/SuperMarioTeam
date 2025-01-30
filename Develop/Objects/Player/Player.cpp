@@ -4,8 +4,6 @@
 #include "../../Utility/Application.h"
 #include "DxLib.h"
 
-//このコメントはカルヴィンが追加しました
-//このコメントはカルヴィンがまた追加しました111111111111111111111111111111
 
 #define D_PLAYER_SPEED	(50.0f)
 
@@ -39,8 +37,7 @@ void Player::Initialize()
 	ResourceManager* rm = ResourceManager::GetInstance();
 	move_animation = rm->GetImages("Resource/Images/Mario/mario.png", 9, 9, 1, 32, 32);
 
-	/******************************************************************************************************************/
-	
+
 	//当たり判定を設定
 	collision.SetSize(D_OBJECT_SIZE, D_OBJECT_SIZE);
 
@@ -52,8 +49,6 @@ void Player::Initialize()
 
 	//当たり判定の描画フラグ
 	SetDrawCollisionBox(true);
-	
-	/******************************************************************************************************************/
 
 
 	// レイヤーの設定

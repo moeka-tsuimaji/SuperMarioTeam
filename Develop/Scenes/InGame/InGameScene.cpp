@@ -33,6 +33,8 @@
 #include "DxLib.h"
 #include <fstream>
 
+#define FLOOR_HEIGHT (403.0f)
+
 InGameScene::InGameScene()
 	: back_ground_image(NULL)
 	, back_ground_sound(NULL)
@@ -69,10 +71,10 @@ void InGameScene::Initialize()
 	PlaySoundMem(back_ground_sound, DX_PLAYTYPE_BACK);
 
 	//プレイヤーを生成する
-	player = CreateObject<Player>(Vector2D(100.0f, 403.0f));
+	player = CreateObject<Player>(Vector2D(100.0f, 300.0f));
 
 	//クリボーを生成する
-	kuribo = CreateObject<Kuribo>(Vector2D(750.0f, 403.0f));
+	kuribo = CreateObject<Kuribo>(Vector2D(400.0f, FLOOR_HEIGHT));
 }
 
 eSceneType InGameScene::Update(const float& delta_second)
