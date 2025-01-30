@@ -22,7 +22,6 @@ Player::Player() :
 	food_count(0),
 	animation_time(0.0f),
 	animation_count(0),
-	//old_panel(ePanelID::NONE),
 	is_power_up(false),
 	is_destroy(false)
 {
@@ -188,7 +187,7 @@ void Player::Movement(float delta_second)
 	}
 	//ƒWƒƒƒ“ƒv
 	 static int jpcount=0;
-	p_velocity.y += 0.095f;
+	p_velocity.y += 0.95f;
 	if (input->GetKey(KEY_INPUT_UP))
 	{
 		if (jpcount == 0)
