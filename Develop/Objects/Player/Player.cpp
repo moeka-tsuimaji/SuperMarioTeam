@@ -169,8 +169,24 @@ void Player::Movement(float delta_second)
 		p_velocity.x = 0.0f;
 		player_state = ePlayerState::IDLE;
 	}
-	
-	
+	//ジャンプ
+	 static int jpcount=0;
+	p_velocity.y += 0.095f;
+	if (input->GetKey(KEY_INPUT_UP))
+	{
+		if (jpcount == 0)
+		{
+
+			flip_flag = false;
+			player_state = ePlayerState::MOVE;
+			p_velocity.y = -22.0f;
+		}
+			jpcount =1;
+	}
+	else
+	{
+		jpcount = 0;
+	}
 	//// 現在パネルの状態を確認
 	//ePanelID panel = StageData::GetPanelData(location);
 
@@ -191,6 +207,10 @@ void Player::Movement(float delta_second)
 	else if (location.x <= 10)
 	{
 		location.x = 10;
+	}
+	if (location.y > 403)
+	{
+		location.y = 403;
 	}
 }
 
