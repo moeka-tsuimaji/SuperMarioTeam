@@ -4,8 +4,8 @@
 #include "../../Utility/Application.h"
 #include "DxLib.h"
 
-
 #define D_PLAYER_SPEED	(50.0f)
+#define SCREEN_CENTER_X (D_WIN_MAX_X / 2) //x座標の画面の中心
 
 Player* Player::instance = nullptr;
 
@@ -19,9 +19,13 @@ Player::Player() :
 	food_count(0),
 	animation_time(0.0f),
 	animation_count(0),
-	//old_panel(ePanelID::NONE),
 	is_power_up(false),
-	is_destroy(false)
+	is_destroy(false),
+	acceleration_rate(30.0f),
+	deceleration_rate(50.0f),
+	max_speed(D_PLAYER_SPEED),
+	scroll_velocity(0.0f),
+	screen_scroll_speed(300.0f)
 {
 
 }
@@ -159,50 +163,125 @@ bool Player::GetDestroy() const
 /// <param name="delta_second">1フレームあたりの時間</param>
 void Player::Movement(float delta_second)
 {
-	// 入力状態の取得
+	//入力状態を取得
 	InputManager* input = InputManager::GetInstance();
 
-	//移動処理
+	//ターゲット速度
+	float target_velocity_x = 0.0f;
+
 	if (input->GetKey(KEY_INPUT_RIGHT))
 	{
 		flip_flag = false;
 		player_state = ePlayerState::MOVE;
-		p_velocity.x = 1.0f;
+		target_velocity_x = 1.0f; // 右向きの速度
 	}
 	else if (input->GetKey(KEY_INPUT_LEFT))
 	{
 		flip_flag = true;
 		player_state = ePlayerState::MOVE;
-		p_velocity.x = -1.0f;
+		target_velocity_x = -1.0f; // 左向きの速度
 	}
 	else
 	{
-		p_velocity.x = 0.0f;
 		player_state = ePlayerState::IDLE;
 	}
-	
-	
-	//// 現在パネルの状態を確認
-	//ePanelID panel = StageData::GetPanelData(location);
 
-	// 前回座標の更新
+
+	//加速か減速させる処理
+	if (target_velocity_x != 0.0f) {
+		//加速
+		if (p_velocity.x > 0 && target_velocity_x < 0 || p_velocity.x < 0 && target_velocity_x > 0)
+		{
+			p_velocity.x = 0.0f;
+		}
+		p_velocity.x += target_velocity_x * acceleration_rate * delta_second;
+
+		//最高速度
+		if (p_velocity.x > max_speed)
+		{
+			p_velocity.x = max_speed;
+		}
+		else if (p_velocity.x < -max_speed)
+		{
+			p_velocity.x = -max_speed;
+		}
+	}
+	else
+	{
+		//減速
+		if (abs(p_velocity.x) > 0)
+		{
+			float deceleration = deceleration_rate * delta_second;
+			if (p_velocity.x > 0)
+			{
+				p_velocity.x = (p_velocity.x - deceleration) > 0 ? (p_velocity.x - deceleration) : 0;
+			}
+			else
+			{
+				p_velocity.x = (p_velocity.x + deceleration) < 0 ? (p_velocity.x + deceleration) : 0;
+			}
+		}
+	}
+
+	Vector2D next_location = location + (p_velocity * delta_second);
 	old_location = location;
 
-	//// 前回パネルの更新
-	//old_panel = panel;
-
-	// 移動量 * 速さ * 時間 で移動先を決定する
-	location += p_velocity * D_PLAYER_SPEED * delta_second;
-
-	//画面の中心から右側に行かないようにする
-	if (location.x >= 320)
+	//現在の画面オフセットを計算
+	float current_offset_x = 0.0f;
+	if (owner_scene != nullptr)
 	{
-		location.x = 320;
+		current_offset_x = owner_scene->GetScreenOffset().x;
 	}
-	else if (location.x <= 10)
+
+	//プレイヤーが移動できる座標範囲制限
+	float screen_limit_left = SCREEN_CENTER_X + current_offset_x - (float)D_WIN_MAX_X;
+	float screen_limit_right = SCREEN_CENTER_X + current_offset_x + (float)D_WIN_MAX_X;
+
+	if (next_location.x < screen_limit_left)
 	{
-		location.x = 10;
+		next_location.x = screen_limit_left;
 	}
+	else if (next_location.x > screen_limit_right)
+	{
+		next_location.x = screen_limit_right;
+	}
+
+	//ステージスクロール処理
+	float target_scroll_amount = 0.0f;
+	bool should_center_player = false;
+
+	//画面中心
+	float center_x = SCREEN_CENTER_X + current_offset_x;
+
+	//プレイヤーが画面中心かつ右へ移動していればステージをスクロールする
+	if (abs(location.x - center_x) <= D_OBJECT_SIZE && p_velocity.x > 0)
+	{
+		target_scroll_amount = -p_velocity.x;
+		should_center_player = true;
+	}
+	else
+	{
+		target_scroll_amount = 0;
+		should_center_player = false;
+	}
+
+
+	//ステージスクロールが必要であれば実装する
+	if (target_scroll_amount != 0)
+	{
+		//スクロールする分を計算する
+		scroll_velocity = target_scroll_amount;
+	}
+	else
+	{
+		scroll_velocity = 0.0f;
+	}
+
+	ApplyScreenScroll(scroll_velocity, delta_second);
+
+	//座標を更新
+	location.x = next_location.x;
+	location.y = next_location.y;
 }
 
 /// <summary>
@@ -234,4 +313,28 @@ Player* Player::GetInstance()
 		instance = new Player();
 	}
 	return instance;
+}
+
+//画面オフセットを設置
+void Player::SetScreenOffset(const Vector2D& offset)
+{
+	if (owner_scene != nullptr)
+	{
+		owner_scene->screen_offset = offset;
+	}
+}
+
+//ステージをスクロールさせる
+void Player::ApplyScreenScroll(float velocity_x, float delta_second)
+{
+	float current_offset_x = 0.0f;
+	if (owner_scene != nullptr)
+	{
+		current_offset_x = owner_scene->GetScreenOffset().x;
+	}
+
+	float scroll_amount = velocity_x * delta_second;
+
+	Vector2D new_offset(current_offset_x + scroll_amount, 0.0f);
+	SetScreenOffset(new_offset);
 }
