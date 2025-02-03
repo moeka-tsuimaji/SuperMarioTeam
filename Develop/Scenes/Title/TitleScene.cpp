@@ -79,7 +79,9 @@ void TitleScene::Draw() const
 void TitleScene::Finalize()
 {
 	// 親クラスの終了時処理を呼び出す
-	__super::Finalize();
+ 	__super::Finalize();
+
+	StopSoundMem(back_ground_sound);
 }
 
 const eSceneType TitleScene::GetNowSceneType() const
