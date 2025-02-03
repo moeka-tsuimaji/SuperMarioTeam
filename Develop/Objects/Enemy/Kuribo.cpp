@@ -155,6 +155,13 @@ void Kuribo::Movement(float delta_second)
 	// ˆÚ“®—Ê * ‘¬‚³ * ŽžŠÔ ‚ÅˆÚ“®æ‚ðŒˆ’è‚·‚é
 	location += k_velocity * D_KURIBO_SPEED * delta_second;
 
+
+	if (location.y > 403)
+	{
+		location.y = 403;
+	}
+
+	k_velocity.y += 0.12f;
 }
 
 /// <summary>

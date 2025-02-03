@@ -68,11 +68,12 @@ void InGameScene::Initialize()
 
 	PlaySoundMem(back_ground_sound, DX_PLAYTYPE_BACK);
 
+	//クリボーを生成する
+	kuribo = CreateObject<Kuribo>(Vector2D(750.0f, 403.0f));
+
 	//プレイヤーを生成する
 	player = CreateObject<Player>(Vector2D(100.0f, 403.0f));
 
-	//クリボーを生成する
-	kuribo = CreateObject<Kuribo>(Vector2D(750.0f, 403.0f));
 }
 
 eSceneType InGameScene::Update(const float& delta_second)

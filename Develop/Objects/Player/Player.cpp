@@ -9,6 +9,7 @@
 //邪魔なコメント
 
 #define D_PLAYER_SPEED	(50.0f)
+#define MAP_GRAVITY    (0.12f)
 
 Player* Player::instance = nullptr;
 
@@ -187,7 +188,7 @@ void Player::Movement(float delta_second)
 	}
 	//ジャンプ
 	 static int jpcount=0;
-	p_velocity.y += 0.95f;
+	 p_velocity.y += MAP_GRAVITY;
 	if (input->GetKey(KEY_INPUT_UP))
 	{
 		if (jpcount == 0)
@@ -195,7 +196,8 @@ void Player::Movement(float delta_second)
 
 			flip_flag = false;
 			player_state = ePlayerState::MOVE;
-			p_velocity.y = -22.0f;
+			p_velocity.y = -12.0f;
+			p_velocity.y = p_velocity.x + p_velocity.y;
 		}
 			jpcount =1;
 	}
