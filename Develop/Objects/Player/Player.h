@@ -100,13 +100,7 @@ public:
 	/// <returns>プレイヤーの状態</returns>
 	bool GetDestroy() const;
 
-	//画面オフセット設置
-	void SetScreenOffset(const Vector2D& offset);
-
 private:
-	// ステージをスクロールする
-	void ApplyScreenScroll(float next_location_x, float current_offset_x);
-
 	/// <summary>
 	/// 移動処理
 	/// </summary>
@@ -121,4 +115,11 @@ private:
 public:
 	//インスタンス取得
 	static Player* GetInstance();
+
+	//画面オフセット設置
+	void SetScreenOffset(const Vector2D& offset);
+
+private:
+	// ステージをスクロールする
+	void ApplyScreenScroll(float next_location_x, float current_offset_x);
 };

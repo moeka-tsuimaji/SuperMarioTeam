@@ -4,8 +4,7 @@
 #include "../../Utility/Application.h"
 #include "DxLib.h"
 
-#define D_PLAYER_SPEED	(50.0f)
-#define SCREEN_CENTER_X (D_WIN_MAX_X / 2) //x座標の画面の中心
+#define SCREEN_CENTER_X (320.0f) //x座標の画面の中心
 
 Player* Player::instance = nullptr;
 
@@ -21,9 +20,9 @@ Player::Player() :
 	animation_count(0),
 	is_power_up(false),
 	is_destroy(false),
-	acceleration_rate(30.0f),
-	deceleration_rate(50.0f),
-	max_speed(D_PLAYER_SPEED),
+	acceleration_rate(70.0f),
+	deceleration_rate(250.0f),
+	max_speed(200.0f),
 	scroll_velocity(0.0f),
 	screen_scroll_speed(300.0f)
 {
@@ -166,20 +165,20 @@ void Player::Movement(float delta_second)
 	//入力状態を取得
 	InputManager* input = InputManager::GetInstance();
 
-	//ターゲット速度
+	//初期速度の変数
 	float target_velocity_x = 0.0f;
 
 	if (input->GetKey(KEY_INPUT_RIGHT))
 	{
 		flip_flag = false;
 		player_state = ePlayerState::MOVE;
-		target_velocity_x = 1.0f; // 右向きの速度
+		target_velocity_x = 5.0f; // 右向きの速度
 	}
 	else if (input->GetKey(KEY_INPUT_LEFT))
 	{
 		flip_flag = true;
 		player_state = ePlayerState::MOVE;
-		target_velocity_x = -1.0f; // 左向きの速度
+		target_velocity_x = -5.0f; // 左向きの速度
 	}
 	else
 	{
@@ -223,8 +222,10 @@ void Player::Movement(float delta_second)
 		}
 	}
 
+	//次と前の位置の値を持つ変数
 	Vector2D next_location = location + (p_velocity * delta_second);
 	old_location = location;
+
 
 	//現在の画面オフセットを計算
 	float current_offset_x = 0.0f;
@@ -234,8 +235,8 @@ void Player::Movement(float delta_second)
 	}
 
 	//プレイヤーが移動できる座標範囲制限
-	float screen_limit_left = SCREEN_CENTER_X + current_offset_x - (float)D_WIN_MAX_X;
-	float screen_limit_right = SCREEN_CENTER_X + current_offset_x + (float)D_WIN_MAX_X;
+	float screen_limit_left = 0.0f + -current_offset_x;
+	float screen_limit_right = SCREEN_CENTER_X + -current_offset_x;
 
 	if (next_location.x < screen_limit_left)
 	{
@@ -246,31 +247,24 @@ void Player::Movement(float delta_second)
 		next_location.x = screen_limit_right;
 	}
 
-	//ステージスクロール処理
+	//ステージスクロールする分の変数
 	float target_scroll_amount = 0.0f;
-	bool should_center_player = false;
 
-	//画面中心
-	float center_x = SCREEN_CENTER_X + current_offset_x;
-
-	//プレイヤーが画面中心かつ右へ移動していればステージをスクロールする
-	if (abs(location.x - center_x) <= D_OBJECT_SIZE && p_velocity.x > 0)
+	//プレイヤーが画面中心 かつ 右へ移動していればステージをスクロールする
+	if (abs(location.x - screen_limit_right) <= D_OBJECT_SIZE && p_velocity.x > 0)
 	{
-		target_scroll_amount = -p_velocity.x;
-		should_center_player = true;
+		target_scroll_amount = p_velocity.x;
 	}
 	else
 	{
 		target_scroll_amount = 0;
-		should_center_player = false;
 	}
 
 
 	//ステージスクロールが必要であれば実装する
 	if (target_scroll_amount != 0)
 	{
-		//スクロールする分を計算する
-		scroll_velocity = target_scroll_amount;
+		scroll_velocity = -target_scroll_amount;
 	}
 	else
 	{
@@ -279,10 +273,12 @@ void Player::Movement(float delta_second)
 
 	ApplyScreenScroll(scroll_velocity, delta_second);
 
-	//座標を更新
+	//プレイヤー座標を更新
 	location.x = next_location.x;
 	location.y = next_location.y;
 }
+
+
 
 /// <summary>
 /// アニメーション制御
