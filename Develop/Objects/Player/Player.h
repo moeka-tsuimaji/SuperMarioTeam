@@ -11,6 +11,8 @@ enum ePlayerState
 	DIE,		// 死亡状態
 };
 
+
+
 /// <summary>
 /// プレイヤークラス（マリオ）
 /// </summary>
@@ -40,12 +42,17 @@ private:
 	int food_count;							// コインを取った枚数
 	float animation_time;					// アニメーション時間
 	int animation_count;					// アニメーション添字
-	//ePanelID old_panel;						// 前回パネル情報
 	bool is_power_up;						// パワー餌を食べたか？
 	bool is_destroy;						// 死んだ状態になったか？
 	static Player* instance;                //プレイヤーのインスタンス
 	// 移動アニメーションの順番
 	const int animation_num[4] = { 0, 1, 2, 1, };
+
+	float acceleration_rate;	//加速度
+	float deceleration_rate;	//減速度
+	float max_speed;			//最高速度
+	float scroll_velocity;		//スクロール加速度
+	float screen_scroll_speed;	//スクロール速度
 
 public:
 	Player();
@@ -93,7 +100,6 @@ public:
 	/// <returns>プレイヤーの状態</returns>
 	bool GetDestroy() const;
 
-
 private:
 	/// <summary>
 	/// 移動処理
@@ -109,4 +115,11 @@ private:
 public:
 	//インスタンス取得
 	static Player* GetInstance();
+
+	//画面オフセット設置
+	void SetScreenOffset(const Vector2D& offset);
+
+private:
+	// ステージをスクロールする
+	void ApplyScreenScroll(float next_location_x, float current_offset_x);
 };

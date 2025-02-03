@@ -10,7 +10,7 @@ private:
 	int back_ground_sound;		// BGM
 	bool pause_flag;            //一時停止フラグ
 	class Player* player;       //プレイヤー情報
-	class Kuribo* kuribo;
+	class Kuribo* kuribo;		//敵（クリボー）
 
 public:
 	InGameScene();

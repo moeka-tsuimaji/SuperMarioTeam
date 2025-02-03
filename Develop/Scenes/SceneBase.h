@@ -28,6 +28,8 @@ protected:
 	std::vector<GameObjectManager*>	create_list;	// 生成を行うオブジェクトリスト
 	std::vector<GameObjectManager*>	object_list;	// 更新と描画を行うオブジェクトリスト
 	std::vector<GameObjectManager*>	destroy_list;	// 破棄を行うオブジェクトリスト
+
+public:
 	Vector2D						screen_offset;	// スクリーンオフセット
 
 public:

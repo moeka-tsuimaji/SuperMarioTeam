@@ -25,11 +25,11 @@ void Ha0::Update(float delta_second)
 	// “ü—Íî•ñ‚ðŽæ“¾
 	InputManager* input = InputManager::GetInstance();
 
-	if (input->GetKey(KEY_INPUT_RIGHT))
+	/*if (input->GetKey(KEY_INPUT_RIGHT))
 	{
 		velocity.x = -0.3f;
 		location += velocity;
-	}
+	}*/
 }
 
 void Ha0::Draw(const Vector2D& screen_offset) const
