@@ -1,4 +1,4 @@
-#include "Floor.h"
+ï»¿#include "Floor.h"
 #include "../../Utility/InputManager.h"
 #include"../../Utility/ResourceManager.h"
 #include "DxLib.h"
@@ -15,37 +15,37 @@ Floor::~Floor()
 
 void Floor::Initialize()
 {
-	//‰æ‘œ‚Ì“Ç‚Ýž‚Ý
+	//ç”»åƒã®èª­ã¿è¾¼ã¿
 	ResourceManager* rm = ResourceManager::GetInstance();
 	image = rm->GetImages("Resource/Images/Block/floor.png")[0];
 
-	// ‰Â“®«‚ÌÝ’è
+	// å¯å‹•æ€§ã®è¨­å®š
 	mobility = eMobilityType::Stationary;
 
-	//“–‚½‚è”»’è‚ðÝ’è
+	//å½“ãŸã‚Šåˆ¤å®šã‚’è¨­å®š
 	collision.SetSize(D_OBJECT_SIZE, D_OBJECT_SIZE);
 
-	//ƒIƒuƒWƒFƒNƒgƒ^ƒCƒv‚ðÝ’è
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚¿ã‚¤ãƒ—ã‚’è¨­å®š
 	collision.SetObjectType(eObjectType::eGround);
 
-	//“–‚½‚éƒIƒuƒWƒFƒNƒgƒ^ƒCƒv‚ðÝ’è
+	//å½“ãŸã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚¿ã‚¤ãƒ—ã‚’è¨­å®š
 	collision.SetHitObjectType({ eObjectType::eItem, eObjectType::eEnemy });
 
-	//“–‚½‚è”»’è‚Ì•`‰æƒtƒ‰ƒO
+	//å½“ãŸã‚Šåˆ¤å®šã®æç”»ãƒ•ãƒ©ã‚°
 	SetDrawCollisionBox(false);
 }
 
 void Floor::Update(float delta_second)
 {
-	//“–‚½‚è”»’è‚ÌˆÊ’u‚ðŽæ“¾‚·‚é
+	//å½“ãŸã‚Šåˆ¤å®šã®ä½ç½®ã‚’å–å¾—ã™ã‚‹
 	Vector2D collisionPosition = collision.GetPosition();
-	//“–‚½‚è”»’è‚ÌˆÊ’u‚ðXV‚·‚é
+	//å½“ãŸã‚Šåˆ¤å®šã®ä½ç½®ã‚’æ›´æ–°ã™ã‚‹
 	collision.SetPosition(location);
 }
 
 void Floor::Draw(const Vector2D& screen_offset) const
 {
-	//ƒIƒtƒZƒbƒg’l‚ðŠî‚É‰æ‘œ‚Ì•`‰æ‚ðs‚¤
+	//ã‚ªãƒ•ã‚»ãƒƒãƒˆå€¤ã‚’åŸºã«ç”»åƒã®æç”»ã‚’è¡Œã†
 	Vector2D graph_location = this->location + screen_offset;
 	DrawRotaGraphF(graph_location.x, graph_location.y, 1.0, 0.0, image, TRUE);
 }

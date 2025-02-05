@@ -1,4 +1,4 @@
-#include "Collision.h"
+ï»¿#include "Collision.h"
 #include <math.h>
 
 Collision::Collision() :
@@ -14,50 +14,50 @@ Collision::~Collision()
 	
 }
 
-//“–‚½‚è”»’è‚ÌˆÊ’u‚ğİ’u‚·‚é
+//å½“ãŸã‚Šåˆ¤å®šã®ä½ç½®ã‚’è¨­ç½®ã™ã‚‹
 void Collision::SetPosition(const Vector2D& pos)
 {
 	position = pos;
 }
 
-//“–‚½‚è”»’è‚ÌˆÊ’u‚ğæ“¾‚·‚é
+//å½“ãŸã‚Šåˆ¤å®šã®ä½ç½®ã‚’å–å¾—ã™ã‚‹
 const Vector2D& Collision::GetPosition() const
 {
 	return position;
 }
 
-//“–‚½‚è”»’è‚Ì‘å‚«‚³İ’u‚·‚é
+//å½“ãŸã‚Šåˆ¤å®šã®å¤§ãã•è¨­ç½®ã™ã‚‹
 void Collision::SetSize(const float& width, const float& height)
 {
 	box_size.x = width;
 	box_size.y = height;
 }
 
-// “–‚½‚è”»’è‚Ì‘å‚«‚³İ’u‚·‚é
+// å½“ãŸã‚Šåˆ¤å®šã®å¤§ãã•è¨­ç½®ã™ã‚‹
 Vector2D Collision::GetSize()
 {
 	return box_size;
 }
 
-//ƒIƒuƒWƒFƒNƒgƒ^ƒCƒv‚ğİ’u
+//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚¿ã‚¤ãƒ—ã‚’è¨­ç½®
 void Collision::SetObjectType(const eObjectType& FUNC_objecttype)
 {
 	object_type = FUNC_objecttype;
 }
 
-//“–‚½‚éƒIƒuƒWƒFƒNƒgƒ^ƒCƒv‚Ìİ’è
+//å½“ãŸã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚¿ã‚¤ãƒ—ã®è¨­å®š
 void Collision::SetHitObjectType(const std::vector<eObjectType>& FUNC_hitobjecttype)
 {
 	hit_object_type = FUNC_hitobjecttype;
 }
 
-//“–‚½‚Á‚½ƒIƒuƒWƒFƒNƒg‚Ìƒ^ƒCƒvŠm”F‚·‚é
+//å½“ãŸã£ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¿ã‚¤ãƒ—ç¢ºèªã™ã‚‹
 bool Collision::IsCheckHitTarget(eObjectType FUNC_hitobject) const
 {
-	//“K—p‚·‚éƒIƒuƒWƒFƒNƒgƒ^ƒCƒv•ªƒ‹[ƒv‚·‚é
+	//é©ç”¨ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚¿ã‚¤ãƒ—åˆ†ãƒ«ãƒ¼ãƒ—ã™ã‚‹
 	for (eObjectType type : hit_object_type)
 	{
-		//“K‰‚·‚éƒ^ƒCƒv‚È‚çTRUE
+		//é©å¿œã™ã‚‹ã‚¿ã‚¤ãƒ—ãªã‚‰TRUE
 		if (type == FUNC_hitobject)
 		{
 			return true;
@@ -67,18 +67,18 @@ bool Collision::IsCheckHitTarget(eObjectType FUNC_hitobject) const
 	return false;
 }
 
-//“–‚½‚è”»’è“¯m‚ª“–‚½‚Á‚Ä‚¢‚é‚©Šm”F
+//å½“ãŸã‚Šåˆ¤å®šåŒå£«ãŒå½“ãŸã£ã¦ã„ã‚‹ã‹ç¢ºèª
 bool Collision::CheckCollision(const Collision& other) const
 {
-	//ƒIƒuƒWƒFƒNƒg‚Ì“–‚½‚è”»’è‚ÌˆÊ’u‚Ì•Ï”éŒ¾
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å½“ãŸã‚Šåˆ¤å®šã®ä½ç½®ã®å¤‰æ•°å®£è¨€
 	Vector2D A_min = position - (box_size / 2) + pivot;
 	Vector2D A_max = position + (box_size / 2) + pivot;
 
-	//“–‚½‚Á‚½ƒIƒuƒWƒFƒNƒg‚Ì“–‚½‚è”»’è‚ÌˆÊ’u‚Ì•Ï”éŒ¾
+	//å½“ãŸã£ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å½“ãŸã‚Šåˆ¤å®šã®ä½ç½®ã®å¤‰æ•°å®£è¨€
 	Vector2D B_min = other.position - (other.box_size / 2) + other.pivot;
 	Vector2D B_max = other.position + (other.box_size / 2) + other.pivot;
 
-	//‚à‚µƒIƒuƒWƒFƒNƒg“¯m‚ª“–‚½‚Á‚Ä‚¢‚ê‚Î true ‚ğ•Ô‚·
+	//ã‚‚ã—ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒå£«ãŒå½“ãŸã£ã¦ã„ã‚Œã° true ã‚’è¿”ã™
 	if (A_min.x < B_max.x &&
 		A_max.x > B_min.x &&
 		A_min.y < B_max.y &&
