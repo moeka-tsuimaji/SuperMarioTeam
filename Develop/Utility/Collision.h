@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
 
 #include"Vector2D.h"
 #include <vector>
 
-// ƒIƒuƒWƒFƒNƒgƒ^ƒCƒv
+// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚¿ã‚¤ãƒ—
 enum class eObjectType : unsigned char
 {
 	eNone,
@@ -14,15 +14,15 @@ enum class eObjectType : unsigned char
 	eItem
 };
 
-//“–‚½‚è”»’è‚ÌƒNƒ‰ƒX
+//å½“ãŸã‚Šåˆ¤å®šã®ã‚¯ãƒ©ã‚¹
 class Collision
 {
 public:
-	bool is_blocking;	//ƒIƒuƒWƒFƒNƒg‚Ì“®‚«‚ª~‚ß‚ç‚ê‚Ä‚¢‚é‚©Šm”F‚·‚é•Ï”
-	Vector2D box_size;	//“–‚½‚è”»’è‚Ì‘å‚«‚³
-	Vector2D pivot;		//“–‚½‚è”»’è‚ÆƒIƒuƒWƒFƒNƒg‚ÌƒIƒtƒZƒbƒg
-	eObjectType object_type;	//ƒIƒuƒWƒFƒNƒg‚Ìƒ^ƒCƒv
-	std::vector<eObjectType> hit_object_type;	//“–‚½‚é‘Ši‚ğ‚ÂƒIƒuƒWƒFƒNƒg
+	bool is_blocking;	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‹•ããŒæ­¢ã‚ã‚‰ã‚Œã¦ã„ã‚‹ã‹ç¢ºèªã™ã‚‹å¤‰æ•°
+	Vector2D box_size;	//å½“ãŸã‚Šåˆ¤å®šã®å¤§ãã•
+	Vector2D pivot;		//å½“ãŸã‚Šåˆ¤å®šã¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚ªãƒ•ã‚»ãƒƒãƒˆ
+	eObjectType object_type;	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¿ã‚¤ãƒ—
+	std::vector<eObjectType> hit_object_type;	//å½“ãŸã‚‹è³‡æ ¼ã‚’æŒã¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
 private:
 	Vector2D position;
@@ -31,28 +31,28 @@ public:
 	Collision();
 	~Collision();
 
-	//“–‚½‚è”»’è‚ÌˆÊ’uİ’u
+	//å½“ãŸã‚Šåˆ¤å®šã®ä½ç½®è¨­ç½®
 	void SetPosition(const Vector2D& pos);
 
-	//“–‚½‚è”»’è‚ÌˆÊ’u‚Ìæ“¾
+	//å½“ãŸã‚Šåˆ¤å®šã®ä½ç½®ã®å–å¾—
 	const Vector2D& GetPosition() const;
 
-	//“–‚½‚è”»’è‚Ì‘å‚«‚³İ’è
+	//å½“ãŸã‚Šåˆ¤å®šã®å¤§ãã•è¨­å®š
 	void SetSize(const float& width, const float& height);
 
-	//“–‚½‚è”»’è‚Ì‘å‚«‚³æ“¾
+	//å½“ãŸã‚Šåˆ¤å®šã®å¤§ãã•å–å¾—
 	Vector2D GetSize();
 
-	//ƒIƒuƒWƒFƒNƒgƒ^ƒCƒv‚Ìİ’è
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚¿ã‚¤ãƒ—ã®è¨­å®š
 	void SetObjectType(const eObjectType& FUNC_objecttype);
 
-	//“–‚½‚éƒIƒuƒWƒFƒNƒgƒ^ƒCƒv‚Ìİ’è
+	//å½“ãŸã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚¿ã‚¤ãƒ—ã®è¨­å®š
 	void SetHitObjectType(const std::vector<eObjectType>& FUNC_hitobjecttype);
 
-	//“–‚½‚Á‚½ƒIƒuƒWƒFƒNƒg‚Ìƒ^ƒCƒvŠm”F
+	//å½“ãŸã£ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¿ã‚¤ãƒ—ç¢ºèª
 	bool IsCheckHitTarget(eObjectType FUNC_hitobject) const;
 
-	//“–‚½‚è”»’è“¯m‚ª“–‚½‚Á‚Ä‚¢‚é‚©Šm”F
+	//å½“ãŸã‚Šåˆ¤å®šåŒå£«ãŒå½“ãŸã£ã¦ã„ã‚‹ã‹ç¢ºèª
 	bool CheckCollision(const Collision& other) const;
 };
 
