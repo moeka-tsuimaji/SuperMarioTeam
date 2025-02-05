@@ -4,6 +4,15 @@
 #include "../../Utility/Application.h"
 #include "DxLib.h"
 
+/*
+UTF-8にするファイル:
+Player.cpp
+InGameScene.cpp
+Collision.h
+Floor.cpp
+*/
+
+
 #define SCREEN_CENTER_X (320.0f) //x座標の画面の中心
 #define PLAYER_CENTER_OFFSET (16.0f) //プレイヤーが中心になるようにするオフセット
 

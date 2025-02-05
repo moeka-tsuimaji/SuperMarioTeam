@@ -1,4 +1,4 @@
-#include "InGameScene.h"
+ï»¿#include "InGameScene.h"
 #include "../../Objects/Player/Player.h"
 #include "../../Objects/Enemy/Kuribo.h"
 #include "../../Objects/Pole/Flag.h"
@@ -52,34 +52,34 @@ InGameScene::~InGameScene()
 
 void InGameScene::Initialize()
 {
-	//ƒXƒe[ƒWƒf[ƒ^“Ç‚İ‚İ¶¬ˆ—
+	//ã‚¹ãƒ†ãƒ¼ã‚¸ãƒ‡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿ç”Ÿæˆå‡¦ç†
 	LoadMarioStageMapCSV();
 
-	// ƒXƒNƒŠ[ƒ“ƒIƒtƒZƒbƒg‚ğİ’è
+	// ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®š
 //	screen_offset.y = D_OBJECT_SIZE * 3.0f;
 
-	// ”wŒi‰æ‘œ‚Ì“Ç‚İ‚İ
+	// èƒŒæ™¯ç”»åƒã®èª­ã¿è¾¼ã¿
 	ResourceManager* rm = ResourceManager::GetInstance();
-	back_ground_image = rm->GetImages("Resource/Images/”z’u‘fŞ/NES---Super-Mario-Bros---World-1-1iC³”Åj.png")[0];
+	back_ground_image = rm->GetImages("Resource/Images/é…ç½®ç´ æ/NES---Super-Mario-Bros---World-1-1ï¼ˆä¿®æ­£ç‰ˆï¼‰.png")[0];
 	
-	// Šù‚ÉBGM‚ª—¬‚ê‚Ä‚¢‚ê‚Î~‚ß‚é
+	// æ—¢ã«BGMãŒæµã‚Œã¦ã„ã‚Œã°æ­¢ã‚ã‚‹
 	
 	
-	// BGM‚Ì“Ç‚İ‚İ
+	// BGMã®èª­ã¿è¾¼ã¿
 	back_ground_sound = rm->GetSounds("Resource/Sounds/BGM_MarioGround.wav");
 
 	PlaySoundMem(back_ground_sound, DX_PLAYTYPE_BACK);
 
-	//ƒvƒŒƒCƒ„[‚ğ¶¬‚·‚é
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ç”Ÿæˆã™ã‚‹
 	player = CreateObject<Player>(Vector2D(100.0f, FLOOR_HEIGHT));
 
-	//ƒNƒŠƒ{[‚ğ¶¬‚·‚é
+	//ã‚¯ãƒªãƒœãƒ¼ã‚’ç”Ÿæˆã™ã‚‹
 	kuribo = CreateObject<Kuribo>(Vector2D(400.0f, FLOOR_HEIGHT));
 }
 
 eSceneType InGameScene::Update(const float& delta_second)
 {
-	// “ü—Íî•ñ‚ğæ“¾
+	// å…¥åŠ›æƒ…å ±ã‚’å–å¾—
 	InputManager* input = InputManager::GetInstance();
 
 	if (input->GetKeyDown(KEY_INPUT_P) || input->GetButtonDown(XINPUT_BUTTON_START))
@@ -94,7 +94,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 
 	//if (!pause_flag)
 	//{
-	//	//eƒNƒ‰ƒX‚ÌXVˆ—‚ğŒÄ‚Ño‚·
+	//	//è¦ªã‚¯ãƒ©ã‚¹ã®æ›´æ–°å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 	//	__super::Update(delta_second);
 
 	//	if (player->GetDestroy())
@@ -102,7 +102,7 @@ eSceneType InGameScene::Update(const float& delta_second)
 	//		return eSceneType::re_start;
 	//	}
 	//}
-	//// ƒŠƒUƒ‹ƒgƒV[ƒ“‚É‘JˆÚ‚·‚é
+	//// ãƒªã‚¶ãƒ«ãƒˆã‚·ãƒ¼ãƒ³ã«é·ç§»ã™ã‚‹
 	//if (input->GetKeyDown(KEY_INPUT_SPACE))
 	//{
 	//	return eSceneType::result;
@@ -112,25 +112,25 @@ eSceneType InGameScene::Update(const float& delta_second)
 	//	return eSceneType::result;
 	//}
 
-	// eƒNƒ‰ƒX‚ÌXVˆ—‚ğŒÄ‚Ño‚·
+	// è¦ªã‚¯ãƒ©ã‚¹ã®æ›´æ–°å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 	return __super::Update(delta_second);
 }
 
 void InGameScene::Draw() const
 {
-	//// ”wŒi‰æ‘œ‚Ì•`‰æ
+	//// èƒŒæ™¯ç”»åƒã®æç”»
 	//DrawRotaGraph(0, 480, 2.0, 0.0, back_ground_image, TRUE);
 
-	// eƒNƒ‰ƒX‚Ì•`‰æˆ—‚ğŒÄ‚Ño‚·
+	// è¦ªã‚¯ãƒ©ã‚¹ã®æç”»å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 	__super::Draw();
 
-	DrawFormatString(640, 240, GetColor(255, 255, 255), "ƒCƒ“ƒQ[ƒ€‰æ–Ê‚Å‚·");
+	DrawFormatString(640, 240, GetColor(255, 255, 255), "ã‚¤ãƒ³ã‚²ãƒ¼ãƒ ç”»é¢ã§ã™");
 
 }
 
 void InGameScene::Finalize()
 {
-	// eƒNƒ‰ƒX‚ÌI—¹ˆ—‚ğŒÄ‚Ño‚·
+	// è¦ªã‚¯ãƒ©ã‚¹ã®çµ‚äº†æ™‚å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 	__super::Finalize();
 }
 
@@ -144,30 +144,30 @@ void InGameScene::LoadMarioStageMapCSV()
 	FILE* fp = NULL;
 	std::string file_name = "Resource/Map/MarioStageMap.csv";
 
-	//w’è‚³‚ê‚½ƒtƒ@ƒCƒ‹‚ğŠJ‚­
+	//æŒ‡å®šã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 	errno_t result = fopen_s(&fp, file_name.c_str(), "r");
 
-	//ƒGƒ‰[ƒ`ƒFƒbƒN
+	//ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 	if (result != 0)
 	{
-		throw (file_name + "‚ªŠJ‚¯‚Ü‚¹‚ñ");
+		throw (file_name + "ãŒé–‹ã‘ã¾ã›ã‚“");
 	}
 
 	int x = 0;
 	int y = 0;
 
-	//ƒtƒ@ƒCƒ‹“à‚Ì•¶š‚ğŠm”F‚·‚é
+	//ãƒ•ã‚¡ã‚¤ãƒ«å†…ã®æ–‡å­—ã‚’ç¢ºèªã™ã‚‹
 	while (true)
 	{
-		//ƒtƒ@ƒCƒ‹‚©‚ç1•¶š’Šo‚·‚é
+		//ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰1æ–‡å­—æŠ½å‡ºã™ã‚‹
 		int c = fgetc(fp);
 
-		//’Šo‚µ‚½•¶š‚ªEOF‚È‚çƒ‹[ƒvI—¹
+		//æŠ½å‡ºã—ãŸæ–‡å­—ãŒEOFãªã‚‰ãƒ«ãƒ¼ãƒ—çµ‚äº†
 		if (c == EOF)
 		{
 			break;
 		}
-		////A‚È‚çAƒ}ƒŠƒI‚ğ¶¬
+		////Aãªã‚‰ã€ãƒãƒªã‚ªã‚’ç”Ÿæˆ
 		//else if (c == 'A')
 		//{
 		//	Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
@@ -175,201 +175,201 @@ void InGameScene::LoadMarioStageMapCSV()
 		//	x++;
 		//}
 		
-		//b‚È‚çAƒuƒƒbƒN‚ğ¶¬
+		//bãªã‚‰ã€ãƒ–ãƒ­ãƒƒã‚¯ã‚’ç”Ÿæˆ
 		else if (c == 'b')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Block>(generate_location);
 			x++;
 		}
-		//?‚È‚çAƒnƒeƒiƒuƒƒbƒN‚ğ¶¬
+		//?ãªã‚‰ã€ãƒãƒ†ãƒŠãƒ–ãƒ­ãƒƒã‚¯ã‚’ç”Ÿæˆ
 		else if (c == '?')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<HatenaBlock>(generate_location);
 			x++;
 		}
-		//_‚È‚çA’ƒF°‚ğì¬
+		//_ãªã‚‰ã€èŒ¶è‰²åºŠã‚’ä½œæˆ
 		else if (c == '_')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Floor>(generate_location);
 			x++;
 		}
-		//^‚È‚çAkai_block‚ğì¬
+		//^ãªã‚‰ã€kai_blockã‚’ä½œæˆ
 		else if (c == '^')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Kai_block>(generate_location);
 			x++;
 		}
-		//s‚È‚çA‹ó‚ğ¶¬
+		//sãªã‚‰ã€ç©ºã‚’ç”Ÿæˆ
 		else if (c == 's')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Sora>(generate_location);
 			x++;
 		}
-		//*‚È‚çAcloud1‚ğ¶¬
+		//*ãªã‚‰ã€cloud1ã‚’ç”Ÿæˆ
 		else if (c == '*')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Cloud1>(generate_location);
 			x++;
 		}
-		//c‚È‚çAcloud2‚ğ¶¬
+		//cãªã‚‰ã€cloud2ã‚’ç”Ÿæˆ
 		else if (c == 'c')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Cloud2>(generate_location);
 			x++;
 		}
-		//l‚È‚çAcloud3‚ğ¶¬
+		//lãªã‚‰ã€cloud3ã‚’ç”Ÿæˆ
 		else if (c == 'l')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Cloud3>(generate_location);
 			x++;
 		}
-		//o‚È‚çAcloud4‚ğ¶¬
+		//oãªã‚‰ã€cloud4ã‚’ç”Ÿæˆ
 		else if (c == 'o')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Cloud4>(generate_location);
 			x++;
 		}
-		//u‚È‚çAcloud5‚ğ¶¬
+		//uãªã‚‰ã€cloud5ã‚’ç”Ÿæˆ
 		else if (c == 'u')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Cloud5>(generate_location);
 			x++;
 		}
-		//d‚È‚çAcloud6‚ğ¶¬
+		//dãªã‚‰ã€cloud6ã‚’ç”Ÿæˆ
 		else if (c == 'd')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Cloud6>(generate_location);
 			x++;
 		}
-		//#‚È‚çAha0‚ğ¶¬
+		//#ãªã‚‰ã€ha0ã‚’ç”Ÿæˆ
 		else if (c == '#')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Ha0>(generate_location);
 			x++;
 		}
-		//h‚È‚çAha1‚ğ¶¬
+		//hãªã‚‰ã€ha1ã‚’ç”Ÿæˆ
 		else if (c == 'h')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Ha1>(generate_location);
 			x++;
 		}
-		//a‚È‚çAha2‚ğ¶¬
+		//aãªã‚‰ã€ha2ã‚’ç”Ÿæˆ
 		else if (c == 'a')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Ha2>(generate_location);
 			x++;
 		}
-		//a‚È‚çAmountain_left‚ğ¶¬
+		//aãªã‚‰ã€mountain_leftã‚’ç”Ÿæˆ
 		else if (c == '+')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Mountain_Left>(generate_location);
 			x++;
 		}
-		//a‚È‚çAmountain_right‚ğ¶¬
+		//aãªã‚‰ã€mountain_rightã‚’ç”Ÿæˆ
 		else if (c == 'M')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Mountain_Right>(generate_location);
 			x++;
 		}
-		//a‚È‚çAmountain_surface‚ğ¶¬
+		//aãªã‚‰ã€mountain_surfaceã‚’ç”Ÿæˆ
 		else if (c == 'O')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Mountain_Surface>(generate_location);
 			x++;
 		}
-		//a‚È‚çAmountain_surface1‚ğ¶¬
+		//aãªã‚‰ã€mountain_surface1ã‚’ç”Ÿæˆ
 		else if (c == 'U')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Mountain_Surface1>(generate_location);
 			x++;
 		}
-		//a‚È‚çAmountain_surface2‚ğ¶¬
+		//aãªã‚‰ã€mountain_surface2ã‚’ç”Ÿæˆ
 		else if (c == 'N')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Mountain_Surface2>(generate_location);
 			x++;
 		}
-		//a‚È‚çAmountain_up‚ğ¶¬
+		//aãªã‚‰ã€mountain_upã‚’ç”Ÿæˆ
 		else if (c == 'T')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Mountain_Up>(generate_location);
 			x++;
 		}
-		//%‚È‚çAdokan_left_down‚ğ¶¬
+		//%ãªã‚‰ã€dokan_left_downã‚’ç”Ÿæˆ
 		else if (c == 'D')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Dokan_left_down>(generate_location);
 			x++;
 		}
-		//D‚È‚çAdokan_left_up‚ğ¶¬
+		//Dãªã‚‰ã€dokan_left_upã‚’ç”Ÿæˆ
 		else if (c == '%')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Dokan_left_up>(generate_location);
 			x++;
 		}
-		//K‚È‚çAdokan_right_down‚ğ¶¬
+		//Kãªã‚‰ã€dokan_right_downã‚’ç”Ÿæˆ
 		else if (c == 'K')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Dokan_right_down>(generate_location);
 			x++;
 		}
-		//A‚È‚çAdokan_right_up‚ğ¶¬
+		//Aãªã‚‰ã€dokan_right_upã‚’ç”Ÿæˆ
 		else if (c == 'A')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Dokan_right_up>(generate_location);
 			x++;
 		}
-		//f‚È‚çAflag.png‚ğ¶¬
+		//fãªã‚‰ã€flag.pngã‚’ç”Ÿæˆ
 		else if (c == 'f')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Flag>(generate_location);
 			x++;
 		}
-		//A‚È‚çApole_down‚ğ¶¬
+		//Aãªã‚‰ã€pole_downã‚’ç”Ÿæˆ
 		else if (c == 'p')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Pole_down>(generate_location);
 			x++;
 		}
-		//A‚È‚çAdokan_right_up‚ğ¶¬
+		//Aãªã‚‰ã€dokan_right_upã‚’ç”Ÿæˆ
 		else if (c == 'P')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 			CreateObject<Pole>(generate_location);
 			x++;
 		}
-		//‹ó”’•¶š‚È‚çA¶¬‚µ‚È‚¢‚ÅŸ‚Ì•¶š‚ğŒ©‚é
+		//ç©ºç™½æ–‡å­—ãªã‚‰ã€ç”Ÿæˆã—ãªã„ã§æ¬¡ã®æ–‡å­—ã‚’è¦‹ã‚‹
 		else if (c == ' ')
 		{
 			x++;
 		}
-		//‰üs•¶š‚È‚çAŸ‚Ìs‚ğŒ©‚é
+		//æ”¹è¡Œæ–‡å­—ãªã‚‰ã€æ¬¡ã®è¡Œã‚’è¦‹ã‚‹
 		else if (c == '\n')
 		{
 			x = 0;
@@ -377,6 +377,6 @@ void InGameScene::LoadMarioStageMapCSV()
 		}
 	}
 
-	// ŠJ‚¢‚½ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
+	// é–‹ã„ãŸãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
 	fclose(fp);
 }
