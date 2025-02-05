@@ -19,19 +19,29 @@ void Kai_block::Initialize()
 	ResourceManager* rm = ResourceManager::GetInstance();
 	image = rm->GetImages("Resource/Images/Block/kai_block.png")[0];
 	velocity = 0.0f;
+
+	// 可動性の設定
+	mobility = eMobilityType::Stationary;
+
+	//当たり判定を設定
+	collision.SetSize(D_OBJECT_SIZE, D_OBJECT_SIZE);
+
+	//オブジェクトタイプを設定
+	collision.SetObjectType(eObjectType::eGround);
+
+	//当たるオブジェクトタイプを設定
+	collision.SetHitObjectType({ eObjectType::eItem, eObjectType::eEnemy });
+
+	//当たり判定の描画フラグ
+	SetDrawCollisionBox(true);
 }
 
 void Kai_block::Update(float delta_second)
 {
-	// 入力情報を取得
-	InputManager* input = InputManager::GetInstance();
-
-	/*if (input->GetKey(KEY_INPUT_RIGHT))
-	{
-		velocity.x = -0.3f;
-		location += velocity;
-	}*/
-
+	//当たり判定の位置を取得する
+	Vector2D collisionPosition = collision.GetPosition();
+	//当たり判定の位置を更新する
+	collision.SetPosition(location);
 }
 
 void Kai_block::Draw(const Vector2D& screen_offset) const

@@ -14,6 +14,18 @@ enum eMobilityType
 	Movable,		// 可動
 };
 
+/// <summary>
+/// 当たり判定の上下左右、衝突面判定
+/// </summary>
+enum class eCollisionSide
+{
+	Top,
+	Bottom,
+	Left,
+	Right,
+	None
+};
+
 // ゲームオブジェクト基底クラス
 class GameObjectManager
 {
@@ -61,6 +73,9 @@ public:
 	/// </summary>
 	/// <param name="hit_object">当たったゲームオブジェクトのポインタ</param>
 	virtual void OnHitCollision(GameObjectManager* hit_object);
+
+	//当たり判定の衝突面を返す
+	eCollisionSide GetCollisionSide(const GameObjectManager& other) const;
 
 public:
 	/// <summary>

@@ -63,7 +63,6 @@ void GameObjectManager::DrawCollision(const Vector2D& screen_offset) const
 		//ìñÇΩÇËîªíËÇï`âÊÇ∑ÇÈ
 		DrawBoxAA(min.x, min.y, max.x, max.y, GetColor(255, 0, 0), false);
 	}
-
 }
 
 /// <summary>
@@ -81,6 +80,45 @@ void GameObjectManager::Finalize()
 void GameObjectManager::OnHitCollision(GameObjectManager* hit_object)
 {
 
+}
+
+//ìñÇΩÇËîªíËÇÃè’ìÀñ Çï‘Ç∑
+eCollisionSide GameObjectManager::GetCollisionSide(const GameObjectManager& other) const
+{
+	Vector2D thisMin = collision.GetPosition() - (collision.box_size / 2) + collision.pivot;
+	Vector2D thisMax = collision.GetPosition() + (collision.box_size / 2) + collision.pivot;
+
+	Vector2D otherMin = other.collision.GetPosition() - (other.collision.box_size / 2) + other.collision.pivot;
+	Vector2D otherMax = other.collision.GetPosition() + (other.collision.box_size / 2) + other.collision.pivot;
+
+	float leftOverlap = otherMax.x - thisMin.x;
+	float rightOverlap = thisMax.x - otherMin.x;
+	float topOverlap = otherMax.y - thisMin.y;
+	float bottomOverlap = thisMax.y - otherMin.y;
+
+	//è’ìÀÇµÇƒÇ¢Ç»Ç¢èÍçá
+	if (leftOverlap <= 0.0f || rightOverlap <= 0.0f || topOverlap <= 0.0f || bottomOverlap <= 0.0f)
+	{
+		return eCollisionSide::None;
+	}
+
+	//Ç«ÇÃñ Ç™ç≈Ç‡èdÇ»Ç¡ÇƒÇ¢ÇÈÇ©Çî‰är
+	if (topOverlap < bottomOverlap && topOverlap < leftOverlap && topOverlap < rightOverlap)
+	{
+		return eCollisionSide::Top;
+	}
+	else if (bottomOverlap < topOverlap && bottomOverlap < leftOverlap && bottomOverlap < rightOverlap) 
+	{
+		return eCollisionSide::Bottom;
+	}
+	else if (leftOverlap < rightOverlap)
+	{
+		return eCollisionSide::Left;
+	}
+	else 
+	{
+		return eCollisionSide::Right;
+	}
 }
 
 /// <summary>

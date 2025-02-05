@@ -10,6 +10,7 @@ enum class eObjectType : unsigned char
 	ePlayer,
 	eEnemy,
 	eGround,
+	eBlock,
 	eItem
 };
 
@@ -38,6 +39,9 @@ public:
 
 	//当たり判定の大きさ設定
 	void SetSize(const float& width, const float& height);
+
+	//当たり判定の大きさ取得
+	Vector2D GetSize();
 
 	//オブジェクトタイプの設定
 	void SetObjectType(const eObjectType& FUNC_objecttype);

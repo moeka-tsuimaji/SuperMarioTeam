@@ -36,19 +36,7 @@ void Kuribo::Initialize()
 	ResourceManager* rm = ResourceManager::GetInstance();
 	move_animation = rm->GetImages("Resource/Images/Enemy/kuribo.png", 3, 3, 1, 32, 32);
 
-	//// 当たり判定の設定
-	//collision.is_blocking = true;
-	//collision.object_type = eObjectType::player;
-	//collision.hit_object_type.push_back(eObjectType::enemy);
-	//collision.hit_object_type.push_back(eObjectType::wall);
-	//collision.hit_object_type.push_back(eObjectType::food);
-	//collision.hit_object_type.push_back(eObjectType::power_food);
-	//collision.hit_object_type.push_back(eObjectType::special);
-	//collision.radius = (D_OBJECT_SIZE - 1.0f) / 2.0f;
-
-
-	/******************************************************************************************************************/
-
+	
 	//当たり判定を設定
 	collision.SetSize(D_OBJECT_SIZE, D_OBJECT_SIZE);
 
@@ -60,9 +48,6 @@ void Kuribo::Initialize()
 
 	//当たり判定の描画フラグ
 	SetDrawCollisionBox(true);
-
-	/******************************************************************************************************************/
-
 
 	// レイヤーの設定
 	z_layer = 4;
@@ -169,7 +154,7 @@ void Kuribo::AnimationControl(float delta_second)
 	{
 		animation_time = 0.0f;
 		animation_count++;
-		if (animation_count >= 4)
+		if (animation_count >= 2)
 		{
 			animation_count = 0;
 		}

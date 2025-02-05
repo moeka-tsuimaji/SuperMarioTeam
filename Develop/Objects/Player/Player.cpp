@@ -5,6 +5,7 @@
 #include "DxLib.h"
 
 #define SCREEN_CENTER_X (320.0f) //x座標の画面の中心
+#define PLAYER_CENTER_OFFSET (16.0f) //プレイヤーが中心になるようにするオフセット
 
 Player* Player::instance = nullptr;
 
@@ -48,7 +49,7 @@ void Player::Initialize()
 	collision.SetObjectType(eObjectType::ePlayer);
 
 	//当たるオブジェクトタイプを設定
-	collision.SetHitObjectType({ eObjectType::eItem, eObjectType::eGround, eObjectType::eEnemy });
+	collision.SetHitObjectType({ eObjectType::eItem, eObjectType::eGround, eObjectType::eBlock, eObjectType::eEnemy });
 
 	//当たり判定の描画フラグ
 	SetDrawCollisionBox(true);
@@ -109,10 +110,37 @@ void Player::Finalize()
 /// <param name="hit_object">当たったゲームオブジェクトのポインタ</param>
 void Player::OnHitCollision(GameObjectManager* hit_object)
 {
+	//当たったオブジェクトの衝突面を取得
+	eCollisionSide side = GetCollisionSide(*hit_object);
+
 	if (hit_object->GetCollision().object_type == eObjectType::eEnemy)
 	{
-		//is_destroy = true;
-		//player_state = DIE;
+		if (side == eCollisionSide::Left)
+		{
+			p_velocity.x = 0.0f;
+		}
+	}
+	else if (hit_object->GetCollision().object_type == eObjectType::eBlock)
+	{
+		//壁にぶつかったら速度を0にする
+		p_velocity.x = 0.0f;
+
+		//前回の位置を確認して壁の右か左側にあたったか判断する
+		float playerLeft = old_location.x;
+		float playerRight = old_location.x + D_OBJECT_SIZE;
+		float wallLeft = hit_object->GetCollision().GetPosition().x;
+		float wallRight = hit_object->GetCollision().GetPosition().x + hit_object->GetCollision().GetSize().x;
+		float player_midpoint = old_location.x + (D_OBJECT_SIZE / 2);
+		float wall_midpoint = hit_object->GetCollision().GetPosition().x + (hit_object->GetCollision().GetSize().x / 2);
+
+		if (player_midpoint < wall_midpoint)
+		{
+			location.x = wallLeft - D_OBJECT_SIZE; //壁の左側
+		}
+		else
+		{
+			location.x = wallRight; //壁の右側
+		}
 	}
 }
 
@@ -235,8 +263,8 @@ void Player::Movement(float delta_second)
 	}
 
 	//プレイヤーが移動できる座標範囲制限
-	float screen_limit_left = 0.0f + -current_offset_x;
-	float screen_limit_right = SCREEN_CENTER_X + -current_offset_x;
+	float screen_limit_left = 0.0f + -current_offset_x + PLAYER_CENTER_OFFSET;
+	float screen_limit_right = SCREEN_CENTER_X + -current_offset_x + PLAYER_CENTER_OFFSET;
 
 	if (next_location.x < screen_limit_left)
 	{

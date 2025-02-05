@@ -19,19 +19,29 @@ void Block::Initialize()
 	ResourceManager* rm = ResourceManager::GetInstance();
 	image = rm->GetImages("Resource/Images/Block/block.png")[0];
 	velocity = 0.0f;
+
+	// 可動性の設定
+	mobility = eMobilityType::Stationary;
+
+	//当たり判定を設定
+	collision.SetSize(D_OBJECT_SIZE, D_OBJECT_SIZE);
+
+	//オブジェクトタイプを設定
+	collision.SetObjectType(eObjectType::eBlock);
+
+	//当たるオブジェクトタイプを設定
+	collision.SetHitObjectType({ eObjectType::eItem, eObjectType::eGround, eObjectType::eEnemy });
+
+	//当たり判定の描画フラグ
+	SetDrawCollisionBox(true);
 }
 
 void Block::Update(float delta_second)
 {
-	// 入力情報を取得
-	InputManager* input = InputManager::GetInstance();
-
-
-	/*if (input->GetKey(KEY_INPUT_RIGHT))
-	{
-		velocity.x = -0.3f;
-		location += velocity;
-	}*/
+	//当たり判定の位置を取得する
+	Vector2D collisionPosition = collision.GetPosition();
+	//当たり判定の位置を更新する
+	collision.SetPosition(location);
 }
 
 void Block::Draw(const Vector2D& screen_offset) const
