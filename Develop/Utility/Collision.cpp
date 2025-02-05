@@ -33,6 +33,12 @@ void Collision::SetSize(const float& width, const float& height)
 	box_size.y = height;
 }
 
+// 当たり判定の大きさ設置する
+Vector2D Collision::GetSize()
+{
+	return box_size;
+}
+
 //オブジェクトタイプを設置
 void Collision::SetObjectType(const eObjectType& FUNC_objecttype)
 {

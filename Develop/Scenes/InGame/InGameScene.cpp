@@ -322,7 +322,7 @@ void InGameScene::LoadMarioStageMapCSV()
 			CreateObject<Dokan_left_down>(generate_location);
 			x++;
 		}
-			//D‚È‚çAdokan_left_up‚ğ¶¬
+		//D‚È‚çAdokan_left_up‚ğ¶¬
 		else if (c == '%')
 		{
 			Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);

@@ -1,10 +1,11 @@
-#include "Player.h"
+ï»¿#include "Player.h"
 #include "../../Utility/InputManager.h"
 #include "../../Utility/ResourceManager.h"
 #include "../../Utility/Application.h"
 #include "DxLib.h"
 
-#define SCREEN_CENTER_X (320.0f) //xÀ•W‚Ì‰æ–Ê‚Ì’†S
+#define SCREEN_CENTER_X (320.0f) //xåº§æ¨™ã®ç”»é¢ã®ä¸­å¿ƒ
+#define PLAYER_CENTER_OFFSET (16.0f) //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒä¸­å¿ƒã«ãªã‚‹ã‚ˆã†ã«ã™ã‚‹ã‚ªãƒ•ã‚»ãƒƒãƒˆ
 
 Player* Player::instance = nullptr;
 
@@ -36,54 +37,54 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	// ƒAƒjƒ[ƒVƒ‡ƒ“‰æ‘œ‚Ì“Ç‚İ‚İ
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç”»åƒã®èª­ã¿è¾¼ã¿
 	ResourceManager* rm = ResourceManager::GetInstance();
 	move_animation = rm->GetImages("Resource/Images/Mario/mario.png", 9, 9, 1, 32, 32);
 
 
-	//“–‚½‚è”»’è‚ğİ’è
+	//å½“ãŸã‚Šåˆ¤å®šã‚’è¨­å®š
 	collision.SetSize(D_OBJECT_SIZE, D_OBJECT_SIZE);
 
-	//ƒIƒuƒWƒFƒNƒgƒ^ƒCƒv‚ğİ’è
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚¿ã‚¤ãƒ—ã‚’è¨­å®š
 	collision.SetObjectType(eObjectType::ePlayer);
 
-	//“–‚½‚éƒIƒuƒWƒFƒNƒgƒ^ƒCƒv‚ğİ’è
-	collision.SetHitObjectType({ eObjectType::eItem, eObjectType::eGround, eObjectType::eEnemy });
+	//å½“ãŸã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚¿ã‚¤ãƒ—ã‚’è¨­å®š
+	collision.SetHitObjectType({ eObjectType::eItem, eObjectType::eGround, eObjectType::eBlock, eObjectType::eEnemy });
 
-	//“–‚½‚è”»’è‚Ì•`‰æƒtƒ‰ƒO
+	//å½“ãŸã‚Šåˆ¤å®šã®æç”»ãƒ•ãƒ©ã‚°
 	SetDrawCollisionBox(true);
 
 
-	// ƒŒƒCƒ„[‚Ìİ’è
+	// ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è¨­å®š
 	z_layer = 5;
 
-	// ‰Â“®«‚Ìİ’è
+	// å¯å‹•æ€§ã®è¨­å®š
 	mobility = eMobilityType::Movable;
 
 	image = move_animation[0];
 
-	//ƒGƒ‰[ƒ`ƒFƒbƒN
+	//ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 	if (move_animation[0] == -1)
 	{
-		throw("ƒ}ƒŠƒI‚Ì‰æ‘œ‚ª‚ ‚è‚Ü‚¹‚ñ\n");
+		throw("ãƒãƒªã‚ªã®ç”»åƒãŒã‚ã‚Šã¾ã›ã‚“\n");
 	}
 }
 
 void Player::Update(float delta_second)
 {
-	//“–‚½‚è”»’è‚ÌˆÊ’u‚ğæ“¾‚·‚é
+	//å½“ãŸã‚Šåˆ¤å®šã®ä½ç½®ã‚’å–å¾—ã™ã‚‹
 	Vector2D collisionPosition = collision.GetPosition();
-	//“–‚½‚è”»’è‚ÌˆÊ’u‚ğXV‚·‚é
+	//å½“ãŸã‚Šåˆ¤å®šã®ä½ç½®ã‚’æ›´æ–°ã™ã‚‹
 	collision.SetPosition(location);
 
-	//“ü—Íó‘Ô‚Ìæ“¾
+	//å…¥åŠ›çŠ¶æ…‹ã®å–å¾—
 	Movement(delta_second);
-	//ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìæ“¾
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å–å¾—
 	if (player_state == MOVE)
 	{
 		AnimationControl(delta_second);
 	}
-	//~‚Ü‚Á‚Ä‚é‚Æ‚«
+	//æ­¢ã¾ã£ã¦ã‚‹ã¨ã
 	else
 	{
 		image = move_animation[0];
@@ -92,59 +93,86 @@ void Player::Update(float delta_second)
 
 void Player::Draw(const Vector2D& screen_offset) const
 {
-	// eƒNƒ‰ƒX‚Ì•`‰æˆ—‚ğŒÄ‚Ño‚·
+	// è¦ªã‚¯ãƒ©ã‚¹ã®æç”»å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 	__super::Draw(screen_offset);
 }
 
 void Player::Finalize()
 {
-	// “®“I”z—ñ‚Ì‰ğ•ú
+	// å‹•çš„é…åˆ—ã®è§£æ”¾
 	move_animation.clear();
 	dying_animation.clear();
 }
 
 /// <summary>
-/// “–‚½‚è”»’è’Ê’mˆ—
+/// å½“ãŸã‚Šåˆ¤å®šé€šçŸ¥å‡¦ç†
 /// </summary>
-/// <param name="hit_object">“–‚½‚Á‚½ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ìƒ|ƒCƒ“ƒ^</param>
+/// <param name="hit_object">å½“ãŸã£ãŸã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒã‚¤ãƒ³ã‚¿</param>
 void Player::OnHitCollision(GameObjectManager* hit_object)
 {
+	//å½“ãŸã£ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¡çªé¢ã‚’å–å¾—
+	eCollisionSide side = GetCollisionSide(*hit_object);
+
 	if (hit_object->GetCollision().object_type == eObjectType::eEnemy)
 	{
-		//is_destroy = true;
-		//player_state = DIE;
+		if (side == eCollisionSide::Left)
+		{
+			p_velocity.x = 0.0f;
+		}
+	}
+	else if (hit_object->GetCollision().object_type == eObjectType::eBlock)
+	{
+		//å£ã«ã¶ã¤ã‹ã£ãŸã‚‰é€Ÿåº¦ã‚’0ã«ã™ã‚‹
+		p_velocity.x = 0.0f;
+
+		//å‰å›ã®ä½ç½®ã‚’ç¢ºèªã—ã¦å£ã®å³ã‹å·¦å´ã«ã‚ãŸã£ãŸã‹åˆ¤æ–­ã™ã‚‹
+		float playerLeft = old_location.x;
+		float playerRight = old_location.x + D_OBJECT_SIZE;
+		float wallLeft = hit_object->GetCollision().GetPosition().x;
+		float wallRight = hit_object->GetCollision().GetPosition().x + hit_object->GetCollision().GetSize().x;
+		float player_midpoint = old_location.x + (D_OBJECT_SIZE / 2);
+		float wall_midpoint = hit_object->GetCollision().GetPosition().x + (hit_object->GetCollision().GetSize().x / 2);
+
+		if (player_midpoint < wall_midpoint)
+		{
+			location.x = wallLeft - D_OBJECT_SIZE; //å£ã®å·¦å´
+		}
+		else
+		{
+			location.x = wallRight; //å£ã®å³å´
+		}
 	}
 }
 
 /// <summary>
-/// ‰a‚ğH‚×‚½”æ“¾
+/// é¤Œã‚’é£Ÿã¹ãŸæ•°å–å¾—
 /// </summary>
-/// <returns>‰a‚ğH‚×‚½”</returns>
+/// <returns>é¤Œã‚’é£Ÿã¹ãŸæ•°</returns>
 int Player::GetFoodCount() const
 {
 	return food_count;
 }
 
 /// <summary>
-/// ƒvƒŒƒCƒ„[‚Ìó‘Ô‚ğæ“¾‚·‚é
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®çŠ¶æ…‹ã‚’å–å¾—ã™ã‚‹
 /// </summary>
-/// <returns>ƒvƒŒƒCƒ„[‚Ìó‘Ô</returns>
+/// <returns>ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®çŠ¶æ…‹</returns>
 ePlayerState Player::GetPlayerState() const
 {
 	return player_state;
 }
 
 /// <summary>
-/// ƒvƒŒƒCƒ„[‚ªƒpƒ[ƒAƒbƒv‚µ‚Ä‚é‚©Šm”F‚·‚é
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒãƒ‘ãƒ¯ãƒ¼ã‚¢ãƒƒãƒ—ã—ã¦ã‚‹ã‹ç¢ºèªã™ã‚‹
 /// </summary>
-/// <returns>ƒvƒŒƒCƒ„[‚Ìó‘Ô</returns>
+/// <returns>ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®çŠ¶æ…‹</returns>
 bool Player::GetPowerUp() const
 {
 	return is_power_up;
 }
 
 /// <summary>
-/// ƒpƒ[ƒ_ƒEƒ“‚³‚¹‚é
+/// ãƒ‘ãƒ¯ãƒ¼ãƒ€ã‚¦ãƒ³ã•ã›ã‚‹
 /// </summary>
 void Player::SetPowerDown()
 {
@@ -157,28 +185,28 @@ bool Player::GetDestroy() const
 }
 
 /// <summary>
-/// ˆÚ“®ˆ—
+/// ç§»å‹•å‡¦ç†
 /// </summary>
-/// <param name="delta_second">1ƒtƒŒ[ƒ€‚ ‚½‚è‚ÌŠÔ</param>
+/// <param name="delta_second">1ãƒ•ãƒ¬ãƒ¼ãƒ ã‚ãŸã‚Šã®æ™‚é–“</param>
 void Player::Movement(float delta_second)
 {
-	//“ü—Íó‘Ô‚ğæ“¾
+	//å…¥åŠ›çŠ¶æ…‹ã‚’å–å¾—
 	InputManager* input = InputManager::GetInstance();
 
-	//‰Šú‘¬“x‚Ì•Ï”
+	//åˆæœŸé€Ÿåº¦ã®å¤‰æ•°
 	float target_velocity_x = 0.0f;
 
 	if (input->GetKey(KEY_INPUT_RIGHT))
 	{
 		flip_flag = false;
 		player_state = ePlayerState::MOVE;
-		target_velocity_x = 5.0f; // ‰EŒü‚«‚Ì‘¬“x
+		target_velocity_x = 5.0f; // å³å‘ãã®é€Ÿåº¦
 	}
 	else if (input->GetKey(KEY_INPUT_LEFT))
 	{
 		flip_flag = true;
 		player_state = ePlayerState::MOVE;
-		target_velocity_x = -5.0f; // ¶Œü‚«‚Ì‘¬“x
+		target_velocity_x = -5.0f; // å·¦å‘ãã®é€Ÿåº¦
 	}
 	else
 	{
@@ -186,16 +214,16 @@ void Player::Movement(float delta_second)
 	}
 
 
-	//‰Á‘¬‚©Œ¸‘¬‚³‚¹‚éˆ—
+	//åŠ é€Ÿã‹æ¸›é€Ÿã•ã›ã‚‹å‡¦ç†
 	if (target_velocity_x != 0.0f) {
-		//‰Á‘¬
+		//åŠ é€Ÿ
 		if (p_velocity.x > 0 && target_velocity_x < 0 || p_velocity.x < 0 && target_velocity_x > 0)
 		{
 			p_velocity.x = 0.0f;
 		}
 		p_velocity.x += target_velocity_x * acceleration_rate * delta_second;
 
-		//Å‚‘¬“x
+		//æœ€é«˜é€Ÿåº¦
 		if (p_velocity.x > max_speed)
 		{
 			p_velocity.x = max_speed;
@@ -207,7 +235,7 @@ void Player::Movement(float delta_second)
 	}
 	else
 	{
-		//Œ¸‘¬
+		//æ¸›é€Ÿ
 		if (abs(p_velocity.x) > 0)
 		{
 			float deceleration = deceleration_rate * delta_second;
@@ -222,21 +250,21 @@ void Player::Movement(float delta_second)
 		}
 	}
 
-	//Ÿ‚Æ‘O‚ÌˆÊ’u‚Ì’l‚ğ‚Â•Ï”
+	//æ¬¡ã¨å‰ã®ä½ç½®ã®å€¤ã‚’æŒã¤å¤‰æ•°
 	Vector2D next_location = location + (p_velocity * delta_second);
 	old_location = location;
 
 
-	//Œ»İ‚Ì‰æ–ÊƒIƒtƒZƒbƒg‚ğŒvZ
+	//ç¾åœ¨ã®ç”»é¢ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨ˆç®—
 	float current_offset_x = 0.0f;
 	if (owner_scene != nullptr)
 	{
 		current_offset_x = owner_scene->GetScreenOffset().x;
 	}
 
-	//ƒvƒŒƒCƒ„[‚ªˆÚ“®‚Å‚«‚éÀ•W”ÍˆÍ§ŒÀ
-	float screen_limit_left = 0.0f + -current_offset_x;
-	float screen_limit_right = SCREEN_CENTER_X + -current_offset_x;
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒç§»å‹•ã§ãã‚‹åº§æ¨™ç¯„å›²åˆ¶é™
+	float screen_limit_left = 0.0f + -current_offset_x + PLAYER_CENTER_OFFSET;
+	float screen_limit_right = SCREEN_CENTER_X + -current_offset_x + PLAYER_CENTER_OFFSET;
 
 	if (next_location.x < screen_limit_left)
 	{
@@ -247,10 +275,10 @@ void Player::Movement(float delta_second)
 		next_location.x = screen_limit_right;
 	}
 
-	//ƒXƒe[ƒWƒXƒNƒ[ƒ‹‚·‚é•ª‚Ì•Ï”
+	//ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã™ã‚‹åˆ†ã®å¤‰æ•°
 	float target_scroll_amount = 0.0f;
 
-	//ƒvƒŒƒCƒ„[‚ª‰æ–Ê’†S ‚©‚Â ‰E‚ÖˆÚ“®‚µ‚Ä‚¢‚ê‚ÎƒXƒe[ƒW‚ğƒXƒNƒ[ƒ‹‚·‚é
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒç”»é¢ä¸­å¿ƒ ã‹ã¤ å³ã¸ç§»å‹•ã—ã¦ã„ã‚Œã°ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã™ã‚‹
 	if (abs(location.x - screen_limit_right) <= D_OBJECT_SIZE && p_velocity.x > 0)
 	{
 		target_scroll_amount = p_velocity.x;
@@ -261,7 +289,7 @@ void Player::Movement(float delta_second)
 	}
 
 
-	//ƒXƒe[ƒWƒXƒNƒ[ƒ‹‚ª•K—v‚Å‚ ‚ê‚ÎÀ‘•‚·‚é
+	//ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãŒå¿…è¦ã§ã‚ã‚Œã°å®Ÿè£…ã™ã‚‹
 	if (target_scroll_amount != 0)
 	{
 		scroll_velocity = -target_scroll_amount;
@@ -273,7 +301,7 @@ void Player::Movement(float delta_second)
 
 	ApplyScreenScroll(scroll_velocity, delta_second);
 
-	//ƒvƒŒƒCƒ„[À•W‚ğXV
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼åº§æ¨™ã‚’æ›´æ–°
 	location.x = next_location.x;
 	location.y = next_location.y;
 }
@@ -281,12 +309,12 @@ void Player::Movement(float delta_second)
 
 
 /// <summary>
-/// ƒAƒjƒ[ƒVƒ‡ƒ“§Œä
+/// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³åˆ¶å¾¡
 /// </summary>
-/// <param name="delta_second">1ƒtƒŒ[ƒ€‚ ‚½‚è‚ÌŠÔ</param>
+/// <param name="delta_second">1ãƒ•ãƒ¬ãƒ¼ãƒ ã‚ãŸã‚Šã®æ™‚é–“</param>
 void Player::AnimationControl(float delta_second)
 {
-	// ˆÚ“®’†‚ÌƒAƒjƒ[ƒVƒ‡ƒ“
+	// ç§»å‹•ä¸­ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 	animation_time += delta_second;
 	if (animation_time >= (1.0f / 8.0f))
 	{
@@ -296,12 +324,12 @@ void Player::AnimationControl(float delta_second)
 		{
 			animation_count = 0;
 		}
-		// ‰æ‘œ‚Ìİ’è
+		// ç”»åƒã®è¨­å®š
 		image = move_animation[animation_num[animation_count]];
 	}
 }
 
-//ƒvƒŒƒCƒ„[‚ÌƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 Player* Player::GetInstance()
 {
 	if (instance == nullptr)
@@ -311,7 +339,7 @@ Player* Player::GetInstance()
 	return instance;
 }
 
-//‰æ–ÊƒIƒtƒZƒbƒg‚ğİ’u
+//ç”»é¢ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­ç½®
 void Player::SetScreenOffset(const Vector2D& offset)
 {
 	if (owner_scene != nullptr)
@@ -320,7 +348,7 @@ void Player::SetScreenOffset(const Vector2D& offset)
 	}
 }
 
-//ƒXƒe[ƒW‚ğƒXƒNƒ[ƒ‹‚³‚¹‚é
+//ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã•ã›ã‚‹
 void Player::ApplyScreenScroll(float velocity_x, float delta_second)
 {
 	float current_offset_x = 0.0f;
