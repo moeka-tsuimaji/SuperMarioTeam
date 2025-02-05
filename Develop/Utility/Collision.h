@@ -1,9 +1,9 @@
-#pragma once
+﻿#pragma once
 
 #include"Vector2D.h"
 #include <vector>
 
-// �I�u�W�F�N�g�^�C�v
+// オブジェクトタイプ
 enum class eObjectType : unsigned char
 {
 	eNone,
@@ -16,15 +16,15 @@ enum class eObjectType : unsigned char
 	eFloor
 };
 
-//�����蔻��̃N���X
+//当たり判定のクラス
 class Collision
 {
 public:
-	bool is_blocking;	//�I�u�W�F�N�g�̓������~�߂��Ă��邩�m�F����ϐ�
-	Vector2D box_size;	//�����蔻��̑傫��
-	Vector2D pivot;		//�����蔻��ƃI�u�W�F�N�g�̃I�t�Z�b�g
-	eObjectType object_type;	//�I�u�W�F�N�g�̃^�C�v
-	std::vector<eObjectType> hit_object_type;	//�����鎑�i�����I�u�W�F�N�g
+	bool is_blocking;	//オブジェクトの動きが止められているか確認する変数
+	Vector2D box_size;	//当たり判定の大きさ
+	Vector2D pivot;		//当たり判定とオブジェクトのオフセット
+	eObjectType object_type;	//オブジェクトのタイプ
+	std::vector<eObjectType> hit_object_type;	//当たる資格を持つオブジェクト
 
 private:
 	Vector2D position;
@@ -33,28 +33,25 @@ public:
 	Collision();
 	~Collision();
 
-	//�����蔻��̈ʒu�ݒu
+	//当たり判定の位置設置
 	void SetPosition(const Vector2D& pos);
 
-	//�����蔻��̈ʒu�̎擾
+	//当たり判定の位置の取得
 	const Vector2D& GetPosition() const;
 
-	//�����蔻��̑傫���ݒ�
+	//当たり判定の大きさ設定
 	void SetSize(const float& width, const float& height);
 
-	//�����蔻��̑傫���擾
-	Vector2D GetSize();
-
-	//�I�u�W�F�N�g�^�C�v�̐ݒ�
+	//オブジェクトタイプの設定
 	void SetObjectType(const eObjectType& FUNC_objecttype);
 
-	//������I�u�W�F�N�g�^�C�v�̐ݒ�
+	//当たるオブジェクトタイプの設定
 	void SetHitObjectType(const std::vector<eObjectType>& FUNC_hitobjecttype);
 
-	//���������I�u�W�F�N�g�̃^�C�v�m�F
+	//当たったオブジェクトのタイプ確認
 	bool IsCheckHitTarget(eObjectType FUNC_hitobject) const;
 
-	//�����蔻�蓯�m���������Ă��邩�m�F
+	//当たり判定同士が当たっているか確認
 	bool CheckCollision(const Collision& other) const;
 };
 
