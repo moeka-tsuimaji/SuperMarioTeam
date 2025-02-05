@@ -45,14 +45,16 @@ private:
 	bool is_power_up;						// パワー餌を食べたか？
 	bool is_destroy;						// 死んだ状態になったか？
 	static Player* instance;                //プレイヤーのインスタンス
+
 	// 移動アニメーションの順番
 	const int animation_num[4] = { 0, 1, 2, 1, };
 
-	float acceleration_rate;	//加速度
-	float deceleration_rate;	//減速度
-	float max_speed;			//最高速度
-	float scroll_velocity;		//スクロール加速度
-	float screen_scroll_speed;	//スクロール速度
+	float acceleration_rate;		//加速度
+	float deceleration_rate;		//減速度
+	float max_speed;				//最高速度
+	float scroll_velocity;			//スクロール加速度
+	float screen_scroll_speed;		//スクロール速度
+	bool is_grounded;				//地面にいるフラグ
 
 public:
 	Player();

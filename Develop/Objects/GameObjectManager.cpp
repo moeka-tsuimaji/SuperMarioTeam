@@ -82,7 +82,7 @@ void GameObjectManager::OnHitCollision(GameObjectManager* hit_object)
 
 }
 
-//当たり判定の衝突面を返す
+//当たり判定の衝突面を返す	/* プレーヤーが地面と接触すると、地面の衝突面を返却する */
 eCollisionSide GameObjectManager::GetCollisionSide(const GameObjectManager& other) const
 {
 	Vector2D thisMin = collision.GetPosition() - (collision.box_size / 2) + collision.pivot;
@@ -102,22 +102,23 @@ eCollisionSide GameObjectManager::GetCollisionSide(const GameObjectManager& othe
 		return eCollisionSide::None;
 	}
 
-	//どの面が最も重なっているかを比較
+	//当たったオブジェクトのどの面が最も重なっているかを比較
+	/*プレーヤーが地面と接触すると、地面の衝突面を返却する*/
 	if (topOverlap < bottomOverlap && topOverlap < leftOverlap && topOverlap < rightOverlap)
-	{
-		return eCollisionSide::Top;
-	}
-	else if (bottomOverlap < topOverlap && bottomOverlap < leftOverlap && bottomOverlap < rightOverlap) 
 	{
 		return eCollisionSide::Bottom;
 	}
+	else if (bottomOverlap < topOverlap && bottomOverlap < leftOverlap && bottomOverlap < rightOverlap) 
+	{
+		return eCollisionSide::Top;
+	}
 	else if (leftOverlap < rightOverlap)
 	{
-		return eCollisionSide::Left;
+		return eCollisionSide::Right;
 	}
 	else 
 	{
-		return eCollisionSide::Right;
+		return eCollisionSide::Left;
 	}
 }
 

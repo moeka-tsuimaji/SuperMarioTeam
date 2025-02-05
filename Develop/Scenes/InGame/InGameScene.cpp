@@ -33,7 +33,7 @@
 #include "DxLib.h"
 #include <fstream>
 
-#define FLOOR_HEIGHT (403.0f)
+#define FLOOR_HEIGHT (390.0f)
 
 InGameScene::InGameScene()
 	: back_ground_image(NULL)

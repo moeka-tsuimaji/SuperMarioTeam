@@ -18,7 +18,7 @@ Floor.cpp
 #define PLAYER_CENTER_OFFSET (16.0f) //プレイヤーが中心になるようにするオフセット
 
 #define D_PLAYER_SPEED	(50.0f)
-#define MAP_GRAVITY    (0.12f)
+#define MAP_GRAVITY    (9.18f)
 
 Player* Player::instance = nullptr;
 
@@ -38,7 +38,8 @@ Player::Player() :
 	deceleration_rate(250.0f),
 	max_speed(200.0f),
 	scroll_velocity(0.0f),
-	screen_scroll_speed(300.0f)
+	screen_scroll_speed(300.0f),
+	is_grounded(false)
 {
 
 }
@@ -101,6 +102,8 @@ void Player::Update(float delta_second)
 	{
 		image = move_animation[0];
 	}
+
+	is_grounded = false;
 }
 
 void Player::Draw(const Vector2D& screen_offset) const
@@ -132,26 +135,45 @@ void Player::OnHitCollision(GameObjectManager* hit_object)
 			p_velocity.x = 0.0f;
 		}
 	}
-	else if (hit_object->GetCollision().object_type == eObjectType::eBlock)
+	
+	if (hit_object->GetCollision().object_type == eObjectType::eGround)
 	{
-		//壁にぶつかったら速度を0にする
-		p_velocity.x = 0.0f;
-
-		//前回の位置を確認して壁の右か左側にあたったか判断する
-		float playerLeft = old_location.x;
-		float playerRight = old_location.x + D_OBJECT_SIZE;
-		float wallLeft = hit_object->GetCollision().GetPosition().x;
-		float wallRight = hit_object->GetCollision().GetPosition().x + hit_object->GetCollision().GetSize().x;
-		float player_midpoint = old_location.x + (D_OBJECT_SIZE / 2);
-		float wall_midpoint = hit_object->GetCollision().GetPosition().x + (hit_object->GetCollision().GetSize().x / 2);
-
-		if (player_midpoint < wall_midpoint)
+		if (side == eCollisionSide::Top)
 		{
-			location.x = wallLeft - D_OBJECT_SIZE; //壁の左側
+			//プレイヤーが地面で立てるようにする
+			p_velocity.y = 0.0f;
+			location.y = hit_object->GetCollision().GetPosition().y - D_OBJECT_SIZE;
+			is_grounded = true;
 		}
-		else
+	}
+
+	if (hit_object->GetCollision().object_type == eObjectType::eBlock)
+	{
+		if (side == eCollisionSide::Left || side == eCollisionSide::Right)
 		{
-			location.x = wallRight; //壁の右側
+			p_velocity.x = 0.0f;
+
+			//ブロックの中にめり込まないようにする
+			if (side == eCollisionSide::Left)
+			{
+				location.x = hit_object->GetCollision().GetPosition().x - D_OBJECT_SIZE;
+			}
+			else if (side == eCollisionSide::Right)
+			{
+				location.x = hit_object->GetCollision().GetPosition().x + hit_object->GetCollision().GetSize().x;
+			}
+		}
+		if (side == eCollisionSide::Top)
+		{
+			//プレイヤーが地面で立てるようにする
+			p_velocity.y = 0.0f;
+			location.y = hit_object->GetCollision().GetPosition().y - D_OBJECT_SIZE;
+			is_grounded = true;
+		}
+		if (side == eCollisionSide::Bottom)
+		{
+			p_velocity.y = 0.0f;
+			location.y = hit_object->GetCollision().GetPosition().y + D_OBJECT_SIZE;
 		}
 	}
 }
@@ -225,9 +247,29 @@ void Player::Movement(float delta_second)
 		player_state = ePlayerState::IDLE;
 	}
 
+	//ジャンプ処理********************************************************
+	static int jpcount = 0;
+
+	//地面から離れていれば重力をプレイヤーに与える
+	if (!is_grounded)
+	{
+		p_velocity.y += MAP_GRAVITY;
+	}
+	//地面に立っている時だけジャンプする
+	if (input->GetKey(KEY_INPUT_UP) && is_grounded)
+	{
+		p_velocity.y = -780.0f;	//ジャンプスピード
+		is_grounded = false;
+	}
+	else
+	{
+		jpcount = 0;
+	}
+	//*********************************************************************
 
 	//加速か減速させる処理
-	if (target_velocity_x != 0.0f) {
+	if (target_velocity_x != 0.0f) 
+	{
 		//加速
 		if (p_velocity.x > 0 && target_velocity_x < 0 || p_velocity.x < 0 && target_velocity_x > 0)
 		{
@@ -261,29 +303,6 @@ void Player::Movement(float delta_second)
 			}
 		}
 	}
-
-	//ジャンプ
-	static int jpcount = 0;
-	p_velocity.y += MAP_GRAVITY;
-	if (input->GetKey(KEY_INPUT_UP))
-	{
-		if (jpcount == 0)
-		{
-
-			flip_flag = false;
-			player_state = ePlayerState::MOVE;
-			p_velocity.y = -12.0f;
-			p_velocity.y = p_velocity.x + p_velocity.y;
-		}
-		jpcount = 1;
-	}
-	else
-	{
-		jpcount = 0;
-	}
-
-	// 移動量 * 速さ * 時間 で移動先を決定する
-	location += p_velocity * D_PLAYER_SPEED * delta_second;
 
 	//次と前の位置の値を持つ変数
 	Vector2D next_location = location + (p_velocity * delta_second);
@@ -339,11 +358,6 @@ void Player::Movement(float delta_second)
 	//プレイヤー座標を更新
 	location.x = next_location.x;
 	location.y = next_location.y;
-
-	if (location.y > 403)
-	{
-		location.y = 403;
-	}
 }
 
 
