@@ -52,5 +52,8 @@ void Floor::Draw(const Vector2D& screen_offset) const
 
 void Floor::OnHitCollision(GameObjectManager* hit_object)
 {
-	//
+	if (hit_object->GetCollision().object_type == eObjectType::ePlayer)
+	{
+
+	}
 }

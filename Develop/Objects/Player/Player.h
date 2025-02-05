@@ -14,7 +14,7 @@ enum ePlayerState
 
 
 /// <summary>
-/// プレイヤークラス（パックマン）
+/// プレイヤークラス（マリオ）
 /// </summary>
 class Player : public GameObject
 {
@@ -39,7 +39,7 @@ private:
 	ePlayerState player_state;				// プレイヤー状態
 	eDirectionState now_direction_state;	// 現在進行方向状態
 	eDirectionState next_direction_state;	// 次回進行方向状態
-	int food_count;							// 餌を食べた数
+	int food_count;							// コインを取った枚数
 	float animation_time;					// アニメーション時間
 	int animation_count;					// アニメーション添字
 	bool is_power_up;						// パワー餌を食べたか？
