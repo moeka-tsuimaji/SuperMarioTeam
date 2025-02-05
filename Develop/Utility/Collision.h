@@ -3,7 +3,7 @@
 #include"Vector2D.h"
 #include <vector>
 
-// ƒIƒuƒWƒFƒNƒgƒ^ƒCƒv
+// ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½^ï¿½Cï¿½v
 enum class eObjectType : unsigned char
 {
 	eNone,
@@ -12,17 +12,19 @@ enum class eObjectType : unsigned char
 	eGround,
 	eBlock,
 	eItem
+	eItem,
+	eFloor
 };
 
-//“–‚½‚è”»’è‚ÌƒNƒ‰ƒX
+//ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½ÌƒNï¿½ï¿½ï¿½X
 class Collision
 {
 public:
-	bool is_blocking;	//ƒIƒuƒWƒFƒNƒg‚Ì“®‚«‚ª~‚ß‚ç‚ê‚Ä‚¢‚é‚©Šm”F‚·‚é•Ï”
-	Vector2D box_size;	//“–‚½‚è”»’è‚Ì‘å‚«‚³
-	Vector2D pivot;		//“–‚½‚è”»’è‚ÆƒIƒuƒWƒFƒNƒg‚ÌƒIƒtƒZƒbƒg
-	eObjectType object_type;	//ƒIƒuƒWƒFƒNƒg‚Ìƒ^ƒCƒv
-	std::vector<eObjectType> hit_object_type;	//“–‚½‚é‘Ši‚ğ‚ÂƒIƒuƒWƒFƒNƒg
+	bool is_blocking;	//ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½Ì“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½~ï¿½ß‚ï¿½ï¿½Ä‚ï¿½ï¿½é‚©ï¿½mï¿½Fï¿½ï¿½ï¿½ï¿½Ïï¿½
+	Vector2D box_size;	//ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½Ì‘å‚«ï¿½ï¿½
+	Vector2D pivot;		//ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½ÆƒIï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ÌƒIï¿½tï¿½Zï¿½bï¿½g
+	eObjectType object_type;	//ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½Ìƒ^ï¿½Cï¿½v
+	std::vector<eObjectType> hit_object_type;	//ï¿½ï¿½ï¿½ï¿½ï¿½é‘ï¿½iï¿½ï¿½ï¿½ï¿½ï¿½ÂƒIï¿½uï¿½Wï¿½Fï¿½Nï¿½g
 
 private:
 	Vector2D position;
@@ -31,28 +33,28 @@ public:
 	Collision();
 	~Collision();
 
-	//“–‚½‚è”»’è‚ÌˆÊ’uİ’u
+	//ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½ÌˆÊ’uï¿½İ’u
 	void SetPosition(const Vector2D& pos);
 
-	//“–‚½‚è”»’è‚ÌˆÊ’u‚Ìæ“¾
+	//ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½ÌˆÊ’uï¿½Ìæ“¾
 	const Vector2D& GetPosition() const;
 
-	//“–‚½‚è”»’è‚Ì‘å‚«‚³İ’è
+	//ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½Ì‘å‚«ï¿½ï¿½ï¿½İ’ï¿½
 	void SetSize(const float& width, const float& height);
 
-	//“–‚½‚è”»’è‚Ì‘å‚«‚³æ“¾
+	//ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½Ì‘å‚«ï¿½ï¿½ï¿½æ“¾
 	Vector2D GetSize();
 
-	//ƒIƒuƒWƒFƒNƒgƒ^ƒCƒv‚Ìİ’è
+	//ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½^ï¿½Cï¿½vï¿½Ìİ’ï¿½
 	void SetObjectType(const eObjectType& FUNC_objecttype);
 
-	//“–‚½‚éƒIƒuƒWƒFƒNƒgƒ^ƒCƒv‚Ìİ’è
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½^ï¿½Cï¿½vï¿½Ìİ’ï¿½
 	void SetHitObjectType(const std::vector<eObjectType>& FUNC_hitobjecttype);
 
-	//“–‚½‚Á‚½ƒIƒuƒWƒFƒNƒg‚Ìƒ^ƒCƒvŠm”F
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½Ìƒ^ï¿½Cï¿½vï¿½mï¿½F
 	bool IsCheckHitTarget(eObjectType FUNC_hitobject) const;
 
-	//“–‚½‚è”»’è“¯m‚ª“–‚½‚Á‚Ä‚¢‚é‚©Šm”F
+	//ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½è“¯ï¿½mï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é‚©ï¿½mï¿½F
 	bool CheckCollision(const Collision& other) const;
 };
 

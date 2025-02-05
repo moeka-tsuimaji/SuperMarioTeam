@@ -6,6 +6,12 @@
 
 #define SCREEN_CENTER_X (320.0f) //x座標の画面の中心
 #define PLAYER_CENTER_OFFSET (16.0f) //プレイヤーが中心になるようにするオフセット
+//このコメントはカルヴィンが追加しました
+//このコメントはカルヴィンがまた追加しました111111111111111111111111111111
+//邪魔なコメント
+
+#define D_PLAYER_SPEED	(50.0f)
+#define MAP_GRAVITY    (0.12f)
 
 Player* Player::instance = nullptr;
 
@@ -42,6 +48,8 @@ void Player::Initialize()
 	move_animation = rm->GetImages("Resource/Images/Mario/mario.png", 9, 9, 1, 32, 32);
 
 
+	/******************************************************************************************************************/
+	
 	//当たり判定を設定
 	collision.SetSize(D_OBJECT_SIZE, D_OBJECT_SIZE);
 
@@ -50,6 +58,7 @@ void Player::Initialize()
 
 	//当たるオブジェクトタイプを設定
 	collision.SetHitObjectType({ eObjectType::eItem, eObjectType::eGround, eObjectType::eBlock, eObjectType::eEnemy });
+	collision.SetHitObjectType({ eObjectType::eItem, eObjectType::eGround, eObjectType::eEnemy ,eObjectType::eFloor});
 
 	//当たり判定の描画フラグ
 	SetDrawCollisionBox(true);
@@ -141,6 +150,11 @@ void Player::OnHitCollision(GameObjectManager* hit_object)
 		{
 			location.x = wallRight; //壁の右側
 		}
+
+	}
+	if (hit_object->GetCollision().object_type == eObjectType::eFloor)
+	{
+
 	}
 }
 
@@ -196,6 +210,10 @@ void Player::Movement(float delta_second)
 	//初期速度の変数
 	float target_velocity_x = 0.0f;
 
+	// 入力状態の取得
+	InputManager* input = InputManager::GetInstance();
+
+	//移動処理
 	if (input->GetKey(KEY_INPUT_RIGHT))
 	{
 		flip_flag = false;
@@ -212,6 +230,13 @@ void Player::Movement(float delta_second)
 	{
 		player_state = ePlayerState::IDLE;
 	}
+	//ジャンプ
+	 static int jpcount=0;
+	 p_velocity.y += MAP_GRAVITY;
+	if (input->GetKey(KEY_INPUT_UP))
+	{
+		if (jpcount == 0)
+		{
 
 
 	//加速か減速させる処理
@@ -267,6 +292,20 @@ void Player::Movement(float delta_second)
 	float screen_limit_right = SCREEN_CENTER_X + -current_offset_x + PLAYER_CENTER_OFFSET;
 
 	if (next_location.x < screen_limit_left)
+	//// 現在パネルの状態を確認
+	//ePanelID panel = StageData::GetPanelData(location);
+
+	// 前回座標の更新
+	old_location = location;
+
+	//// 前回パネルの更新
+	//old_panel = panel;
+
+	// 移動量 * 速さ * 時間 で移動先を決定する
+	location += p_velocity * D_PLAYER_SPEED * delta_second;
+
+	//画面の中心から右側に行かないようにする
+	if (location.x >= 320)
 	{
 		next_location.x = screen_limit_left;
 	}

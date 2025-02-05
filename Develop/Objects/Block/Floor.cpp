@@ -15,42 +15,80 @@ Floor::~Floor()
 
 void Floor::Initialize()
 {
-	//‰æ‘œ‚Ì“Ç‚Ýž‚Ý
+	//ï¿½æ‘œï¿½Ì“Ç‚Ýï¿½ï¿½ï¿½
 	ResourceManager* rm = ResourceManager::GetInstance();
 	image = rm->GetImages("Resource/Images/Block/floor.png")[0];
 
-	// ‰Â“®«‚ÌÝ’è
-	mobility = eMobilityType::Stationary;
 
-	//“–‚½‚è”»’è‚ðÝ’è
+
+	//// ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½ÌÝ’ï¿½
+	//collision.is_blocking = true;
+	//collision.object_type = eObjectType::player;
+	//collision.hit_object_type.push_back(eObjectType::enemy);
+	//collision.hit_object_type.push_back(eObjectType::wall);
+	//collision.hit_object_type.push_back(eObjectType::food);
+	//collision.hit_object_type.push_back(eObjectType::power_food);
+	//collision.hit_object_type.push_back(eObjectType::special);
+	//collision.radius = (D_OBJECT_SIZE - 1.0f) / 2.0f;
+
+
+	/******************************************************************************************************************/
+
+	//ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½ï¿½Ý’ï¿½
 	collision.SetSize(D_OBJECT_SIZE, D_OBJECT_SIZE);
 
-	//ƒIƒuƒWƒFƒNƒgƒ^ƒCƒv‚ðÝ’è
+	//ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½^ï¿½Cï¿½vï¿½ï¿½Ý’ï¿½
 	collision.SetObjectType(eObjectType::eGround);
 
-	//“–‚½‚éƒIƒuƒWƒFƒNƒgƒ^ƒCƒv‚ðÝ’è
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½^ï¿½Cï¿½vï¿½ï¿½Ý’ï¿½
 	collision.SetHitObjectType({ eObjectType::eItem, eObjectType::eEnemy });
 
-	//“–‚½‚è”»’è‚Ì•`‰æƒtƒ‰ƒO
+	//ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½Ì•`ï¿½ï¿½tï¿½ï¿½ï¿½O
 	SetDrawCollisionBox(false);
+	collision.SetObjectType(eObjectType::eFloor);
+
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½^ï¿½Cï¿½vï¿½ï¿½Ý’ï¿½
+	collision.SetHitObjectType({ eObjectType::ePlayer, eObjectType::eEnemy });
+
+	//ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½Ì•`ï¿½ï¿½tï¿½ï¿½ï¿½O
+	SetDrawCollisionBox(true);
+
+	/******************************************************************************************************************/
+
+
+
 }
 
 void Floor::Update(float delta_second)
 {
-	//“–‚½‚è”»’è‚ÌˆÊ’u‚ðŽæ“¾‚·‚é
+
+	//ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½ÌˆÊ’uï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½
 	Vector2D collisionPosition = collision.GetPosition();
-	//“–‚½‚è”»’è‚ÌˆÊ’u‚ðXV‚·‚é
+	//ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½ÌˆÊ’uï¿½ï¿½ï¿½Xï¿½Vï¿½ï¿½ï¿½ï¿½
 	collision.SetPosition(location);
+
+
+	// ï¿½ï¿½ï¿½Íï¿½ï¿½ï¿½ï¿½æ“¾
+	InputManager* input = InputManager::GetInstance();
+
+	if (input->GetKey(KEY_INPUT_RIGHT))
+	{
+		velocity.x = -0.3f;
+		location += velocity;
+	}
 }
 
 void Floor::Draw(const Vector2D& screen_offset) const
 {
-	//ƒIƒtƒZƒbƒg’l‚ðŠî‚É‰æ‘œ‚Ì•`‰æ‚ðs‚¤
+	//ï¿½Iï¿½tï¿½Zï¿½bï¿½gï¿½lï¿½ï¿½ï¿½ï¿½É‰æ‘œï¿½Ì•`ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½
 	Vector2D graph_location = this->location + screen_offset;
 	DrawRotaGraphF(graph_location.x, graph_location.y, 1.0, 0.0, image, TRUE);
 }
 
 void Floor::OnHitCollision(GameObjectManager* hit_object)
 {
-	//
+	if (hit_object->GetCollision().object_type == eObjectType::ePlayer)
+	{
+
+	}
 }
