@@ -10,7 +10,8 @@ enum class eObjectType : unsigned char
 	ePlayer,
 	eEnemy,
 	eGround,
-	eItem
+	eItem,
+	eFloor
 };
 
 //“–‚½‚è”»’è‚ÌƒNƒ‰ƒX
