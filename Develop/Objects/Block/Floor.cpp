@@ -1,4 +1,4 @@
-#include "Floor.h"
+﻿#include "Floor.h"
 #include "../../Utility/InputManager.h"
 #include"../../Utility/ResourceManager.h"
 #include "DxLib.h"
@@ -15,35 +15,23 @@ Floor::~Floor()
 
 void Floor::Initialize()
 {
-	//�摜�̓ǂݍ���
+	//画像の読み込み
 	ResourceManager* rm = ResourceManager::GetInstance();
 	image = rm->GetImages("Resource/Images/Block/floor.png")[0];
 
+	// 可動性の設定
+	mobility = eMobilityType::Stationary;
 
-
-	//// �����蔻��̐ݒ�
-	//collision.is_blocking = true;
-	//collision.object_type = eObjectType::player;
-	//collision.hit_object_type.push_back(eObjectType::enemy);
-	//collision.hit_object_type.push_back(eObjectType::wall);
-	//collision.hit_object_type.push_back(eObjectType::food);
-	//collision.hit_object_type.push_back(eObjectType::power_food);
-	//collision.hit_object_type.push_back(eObjectType::special);
-	//collision.radius = (D_OBJECT_SIZE - 1.0f) / 2.0f;
-
-
-	/******************************************************************************************************************/
-
-	//�����蔻���ݒ�
+	//当たり判定を設定
 	collision.SetSize(D_OBJECT_SIZE, D_OBJECT_SIZE);
 
-	//�I�u�W�F�N�g�^�C�v��ݒ�
+	//オブジェクトタイプを設定
 	collision.SetObjectType(eObjectType::eGround);
 
-	//������I�u�W�F�N�g�^�C�v��ݒ�
+	//当たるオブジェクトタイプを設定
 	collision.SetHitObjectType({ eObjectType::eItem, eObjectType::eEnemy });
 
-	//�����蔻��̕`��t���O
+	//当たり判定の描画フラグ
 	SetDrawCollisionBox(false);
 	collision.SetObjectType(eObjectType::eFloor);
 
@@ -61,10 +49,9 @@ void Floor::Initialize()
 
 void Floor::Update(float delta_second)
 {
-
-	//�����蔻��̈ʒu���擾����
+	//当たり判定の位置を取得する
 	Vector2D collisionPosition = collision.GetPosition();
-	//�����蔻��̈ʒu���X�V����
+	//当たり判定の位置を更新する
 	collision.SetPosition(location);
 
 
@@ -80,7 +67,7 @@ void Floor::Update(float delta_second)
 
 void Floor::Draw(const Vector2D& screen_offset) const
 {
-	//�I�t�Z�b�g�l����ɉ摜�̕`����s��
+	//オフセット値を基に画像の描画を行う
 	Vector2D graph_location = this->location + screen_offset;
 	DrawRotaGraphF(graph_location.x, graph_location.y, 1.0, 0.0, image, TRUE);
 }
