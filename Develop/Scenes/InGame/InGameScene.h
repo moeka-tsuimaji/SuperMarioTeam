@@ -1,6 +1,9 @@
 #pragma once
 
 #include "../SceneBase.h"
+#include "../../Objects/GameObject.h"
+
+
 
 // メインゲームシーン
 class InGameScene : public SceneBase
@@ -10,7 +13,7 @@ private:
 	int back_ground_sound;		// BGM
 	bool pause_flag;            //一時停止フラグ
 	class Player* player;       //プレイヤー情報
-	class Kuribo* kuribo;
+	class Kuribo* kuribo;       //クリボー情報
 
 public:
 	InGameScene();

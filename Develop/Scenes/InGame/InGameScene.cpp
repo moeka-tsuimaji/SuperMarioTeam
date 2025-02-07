@@ -53,12 +53,11 @@ void InGameScene::Initialize()
 	//ステージデータ読み込み生成処理
 	LoadMarioStageMapCSV();
 
-	// スクリーンオフセットを設定
-//	screen_offset.y = D_OBJECT_SIZE * 3.0f;
+	 //スクリーンオフセットを設定
+	//screen_offset.y = D_OBJECT_SIZE * 3.0f;
 
-	// 背景画像の読み込み
 	ResourceManager* rm = ResourceManager::GetInstance();
-	back_ground_image = rm->GetImages("Resource/Images/配置素材/NES---Super-Mario-Bros---World-1-1（修正版）.png")[0];
+
 	// BGMの読み込み
 	back_ground_sound = rm->GetSounds("Resource/Sounds/BGM_MarioGround.wav");
 
@@ -112,14 +111,8 @@ eSceneType InGameScene::Update(const float& delta_second)
 
 void InGameScene::Draw() const
 {
-	//// 背景画像の描画
-	//DrawRotaGraph(0, 480, 2.0, 0.0, back_ground_image, TRUE);
-
 	// 親クラスの描画処理を呼び出す
 	__super::Draw();
-
-	DrawFormatString(640, 240, GetColor(255, 255, 255), "インゲーム画面です");
-
 }
 
 void InGameScene::Finalize()
@@ -137,6 +130,8 @@ void InGameScene::LoadMarioStageMapCSV()
 {
 	FILE* fp = NULL;
 	std::string file_name = "Resource/Map/MarioStageMap.csv";
+
+	ResourceManager* rm = ResourceManager::GetInstance();
 
 	//指定されたファイルを開く
 	errno_t result = fopen_s(&fp, file_name.c_str(), "r");
@@ -161,14 +156,6 @@ void InGameScene::LoadMarioStageMapCSV()
 		{
 			break;
 		}
-		////Aなら、マリオを生成
-		//else if (c == 'A')
-		//{
-		//	Vector2D generate_location = (Vector2D((float)x, (float)y) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
-		//	CreateObject<Player>(generate_location);
-		//	x++;
-		//}
-		
 		//bなら、ブロックを生成
 		else if (c == 'b')
 		{

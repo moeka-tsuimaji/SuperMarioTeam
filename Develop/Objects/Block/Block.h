@@ -6,7 +6,7 @@ class Block : public GameObject
 {
 
 private:
-
+	
 public:
 	Block();
 	virtual ~Block();
@@ -16,5 +16,8 @@ public:
 	virtual void Draw(const Vector2D& screen_offset) const override;
 
 	virtual void OnHitCollision(GameObjectManager* hit_object) override;
+
+private:
+	
 };
 

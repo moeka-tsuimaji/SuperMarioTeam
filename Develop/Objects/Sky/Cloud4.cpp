@@ -27,7 +27,7 @@ void Cloud4::Update(float delta_second)
 
 	if (input->GetKey(KEY_INPUT_RIGHT))
 	{
-		velocity.x = -0.3f;
+		velocity.x = SCROLL_SPEED;
 		location += velocity;
 	}
 }

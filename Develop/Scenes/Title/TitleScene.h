@@ -8,9 +8,10 @@ class TitleScene : public SceneBase
 private:
 	int back_ground_image;		// ”wŒi‰æ‘œ
 	int back_ground_sound;		// BGM
-	class Mario* mario;
-	class Time* time;
-	class World* world;
+	//UI
+	int mario;
+	int world;
+	int time;
 public:
 	TitleScene();
 	virtual ~TitleScene();

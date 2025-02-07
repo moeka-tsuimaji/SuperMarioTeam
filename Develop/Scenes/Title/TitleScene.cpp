@@ -1,9 +1,6 @@
 #include "TitleScene.h"
 #include "../../Utility/InputManager.h"
 #include"../../Utility/ResourceManager.h"
-#include "../../Objects/UI/Mario.h"
-#include "../../Objects/UI/Time.h"
-#include "../../Objects/UI/World.h"
 #include "DxLib.h"
 
 TitleScene::TitleScene()
@@ -34,12 +31,10 @@ void TitleScene::Initialize()
 
 	PlaySoundMem(back_ground_sound, DX_PLAYTYPE_BACK);
 
-	//mario_Ui‚ğ¶¬‚·‚é
-	mario = CreateObject<Mario>(Vector2D(150.0f, 15.0f));
-	//time_Ui‚ğ¶¬‚·‚é
-	time = CreateObject<Time>(Vector2D(500.0f, 15.0f));
-	//_Ui‚ğ¶¬‚·‚é
-	world = CreateObject<World>(Vector2D(380.0f, 15.0f));
+	//UI‚Ì“Ç‚İ‚İ
+	mario = rm->GetImages("Resource/Images/UI/name_mario.png")[0];
+	time = rm->GetImages("Resource/Images/UI/time.png")[0];
+	world = rm->GetImages("Resource/Images/UI/world.png")[0];
 }
 
 eSceneType TitleScene::Update(const float& delta_second)
@@ -65,15 +60,14 @@ void TitleScene::Draw() const
 {
 	// ”wŒi‰æ‘œ‚Ì•`‰æ
 	DrawRotaGraph(320, 240, 1.0, 0.0, back_ground_image, TRUE);
+	//UI‚Ì•`‰æ
+	DrawRotaGraph(150, 15, 1.0, 0.0, mario, TRUE);
+	DrawRotaGraph(500, 15, 1.0, 0.0, time, TRUE);
+	DrawRotaGraph(380, 15, 1.0, 0.0, world, TRUE);
 
 	// eƒNƒ‰ƒX‚Ì•`‰æˆ—‚ğŒÄ‚Ño‚·
 	__super::Draw();
 
-	//// UIŒn‚Ì•`‰æˆ—
-	//if (pause_flag)
-	//{
-	//	DrawString(10, 10, " P A U S E ", GetColor(255, 255, 255), TRUE);
-	//}
 }
 
 void TitleScene::Finalize()

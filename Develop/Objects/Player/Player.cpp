@@ -184,9 +184,9 @@ void Player::Movement(float delta_second)
 	location += p_velocity * D_PLAYER_SPEED * delta_second;
 
 	//‰æ–ÊŠO‚És‚©‚È‚¢‚æ‚¤‚É‚·‚é
-	if (location.x >= 630)
+	if (location.x > 320)
 	{
-		location.x = 630;
+		location.x = 320;
 	}
 	else if (location.x <= 10)
 	{

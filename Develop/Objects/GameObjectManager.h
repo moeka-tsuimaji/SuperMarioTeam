@@ -4,6 +4,7 @@
 #include "../Utility/Collision.h"
 
 #define D_OBJECT_SIZE	(32.0f)			// 壁のサイズ
+#define SCROLL_SPEED    (-0.1f)          //画面スクロールの速さ
 
 /// <summary>
 /// 可動性の種類
@@ -18,7 +19,7 @@ enum eMobilityType
 class GameObjectManager
 {
 protected:
-	class SceneBase* owner_scene;	// 所有するシーン情報
+	class SceneBase* owner_scene;	    // 所有するシーン情報
 	Vector2D			location;		// 位置座標
 	Collision	        collision;		// 当たり判定情報
 	int					image;			// 画像情報

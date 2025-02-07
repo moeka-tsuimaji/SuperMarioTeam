@@ -131,7 +131,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Objects\UI\Mario.cpp" />
     <ClCompile Include="Objects\Enemy\Kuribo.cpp" />
     <ClCompile Include="Objects\Block\Kai_block.cpp" />
     <ClCompile Include="Objects\Pole\Flag.cpp" />
@@ -161,7 +160,6 @@
     <ClCompile Include="Objects\Player\Player.cpp" />
     <ClCompile Include="Objects\Pole\Pole.cpp" />
     <ClCompile Include="Objects\Pole\Pole_down.cpp" />
-    <ClCompile Include="Objects\UI\Time.cpp" />
     <ClCompile Include="Utility\Application.cpp" />
     <ClCompile Include="AppMain.cpp" />
     <ClCompile Include="Objects\GameObjectManager.cpp" />
@@ -173,10 +171,8 @@
     <ClCompile Include="Scenes\SceneManager.cpp" />
     <ClCompile Include="Scenes\Title\TitleScene.cpp" />
     <ClCompile Include="Utility\Vector2D.cpp" />
-    <ClCompile Include="Objects\UI\World.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Objects\UI\Mario.h" />
     <ClInclude Include="Objects\Enemy\Kuribo.h" />
     <ClInclude Include="Objects\Block\Kai_block.h" />
     <ClInclude Include="Objects\Pole\Flag.h" />
@@ -206,7 +202,6 @@
     <ClInclude Include="Objects\Player\Player.h" />
     <ClInclude Include="Objects\Pole\Pole.h" />
     <ClInclude Include="Objects\Pole\Pole_down.h" />
-    <ClInclude Include="Objects\UI\Time.h" />
     <ClInclude Include="Utility\Application.h" />
     <ClInclude Include="Objects\GameObjectManager.h" />
     <ClInclude Include="Scenes\InGame\InGameScene.h" />
@@ -219,7 +214,6 @@
     <ClInclude Include="Scenes\SceneManager.h" />
     <ClInclude Include="Scenes\Title\TitleScene.h" />
     <ClInclude Include="Utility\Vector2D.h" />
-    <ClInclude Include="Objects\UI\World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

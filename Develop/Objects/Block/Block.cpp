@@ -23,13 +23,14 @@ void Block::Initialize()
 
 void Block::Update(float delta_second)
 {
+	
 	// “ü—Íî•ñ‚ðŽæ“¾
 	InputManager* input = InputManager::GetInstance();
 
 	
 	if (input->GetKey(KEY_INPUT_RIGHT))
 	{
-		velocity.x = -0.3f;
+		velocity.x = SCROLL_SPEED;
 		location += velocity;
 	}
 }
@@ -44,6 +45,8 @@ void Block::Draw(const Vector2D& screen_offset) const
 
 	
 }
+
+
 
 void Block::OnHitCollision(GameObjectManager* hit_object)
 {
