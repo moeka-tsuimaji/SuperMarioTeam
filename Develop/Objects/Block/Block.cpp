@@ -33,7 +33,7 @@ void Block::Initialize()
 	collision.SetHitObjectType({ eObjectType::eItem, eObjectType::eGround, eObjectType::eEnemy });
 
 	//“–‚½‚è”»’è‚Ì•`‰æƒtƒ‰ƒO
-	SetDrawCollisionBox(true);
+	SetDrawCollisionBox(false);
 }
 
 void Block::Update(float delta_second)

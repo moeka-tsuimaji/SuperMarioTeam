@@ -28,7 +28,7 @@ void HatenaBlock::Initialize()
 	collision.SetSize(D_OBJECT_SIZE, D_OBJECT_SIZE);
 
 	//オブジェクトタイプを設定
-	collision.SetObjectType(eObjectType::eBlock);
+	collision.SetObjectType(eObjectType::eHatena);
 
 	//当たるオブジェクトタイプを設定
 	collision.SetHitObjectType({ eObjectType::eItem, eObjectType::eEnemy });

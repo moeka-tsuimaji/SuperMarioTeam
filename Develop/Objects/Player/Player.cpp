@@ -62,10 +62,10 @@ void Player::Initialize()
 	collision.SetObjectType(eObjectType::ePlayer);
 
 	//当たるオブジェクトタイプを設定
-	collision.SetHitObjectType({ eObjectType::eItem, eObjectType::eGround, eObjectType::eBlock, eObjectType::eEnemy });
+	collision.SetHitObjectType({ eObjectType::eItem, eObjectType::eGround, eObjectType::eBlock, eObjectType::eHatena, eObjectType::eEnemy });
 
 	//当たり判定の描画フラグ
-	SetDrawCollisionBox(true);
+	SetDrawCollisionBox(false);
 
 
 	// レイヤーの設定
@@ -128,25 +128,28 @@ void Player::OnHitCollision(GameObjectManager* hit_object)
 	//当たったオブジェクトの衝突面を取得
 	eCollisionSide side = GetCollisionSide(*hit_object);
 
+
+	//Enemyに当たった場合
 	if (hit_object->GetCollision().object_type == eObjectType::eEnemy)
 	{
-		if (side == eCollisionSide::Left)
+		if (side == eCollisionSide::Left || side == eCollisionSide::Right)
 		{
-			p_velocity.x = 0.0f;
+			//p_velocity.x = 0.0f;
 		}
 	}
 	
+	//Groundに当たった場合
 	if (hit_object->GetCollision().object_type == eObjectType::eGround)
 	{
 		if (side == eCollisionSide::Top)
 		{
-			//プレイヤーが地面で立てるようにする
 			p_velocity.y = 0.0f;
 			location.y = hit_object->GetCollision().GetPosition().y - D_OBJECT_SIZE;
 			is_grounded = true;
 		}
 	}
 
+	//ブロックに当たった場合
 	if (hit_object->GetCollision().object_type == eObjectType::eBlock)
 	{
 		if (side == eCollisionSide::Left || side == eCollisionSide::Right)
@@ -165,7 +168,6 @@ void Player::OnHitCollision(GameObjectManager* hit_object)
 		}
 		if (side == eCollisionSide::Top)
 		{
-			//プレイヤーが地面で立てるようにする
 			p_velocity.y = 0.0f;
 			location.y = hit_object->GetCollision().GetPosition().y - D_OBJECT_SIZE;
 			is_grounded = true;

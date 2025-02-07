@@ -12,7 +12,8 @@ enum class eObjectType : unsigned char
 	eGround,
 	eBlock,
 	eItem,
-	eFloor
+	eFloor,
+	eHatena
 };
 
 //当たり判定のクラス

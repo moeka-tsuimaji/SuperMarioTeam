@@ -47,7 +47,7 @@ void Kuribo::Initialize()
 	collision.SetHitObjectType({ eObjectType::ePlayer, eObjectType::eGround });
 
 	//当たり判定の描画フラグ
-	SetDrawCollisionBox(true);
+	SetDrawCollisionBox(false);
 
 	// レイヤーの設定
 	z_layer = 4;

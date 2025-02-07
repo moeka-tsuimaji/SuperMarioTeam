@@ -92,6 +92,11 @@ eSceneType InGameScene::Update(const float& delta_second)
 		PlaySoundMem(back_ground_sound, DX_PLAYTYPE_LOOP, TRUE);
 	}
 
+	if (input->GetKeyDown(KEY_INPUT_F))
+	{
+		CreateObject<Kuribo>(Vector2D(400.0f, FLOOR_HEIGHT));
+	}
+
 	//if (!pause_flag)
 	//{
 	//	//親クラスの更新処理を呼び出す

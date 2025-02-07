@@ -103,7 +103,6 @@ eCollisionSide GameObjectManager::GetCollisionSide(const GameObjectManager& othe
 	}
 
 	//当たったオブジェクトのどの面が最も重なっているかを比較
-	/*プレーヤーが地面と接触すると、地面の衝突面を返却する*/
 	if (topOverlap < bottomOverlap && topOverlap < leftOverlap && topOverlap < rightOverlap)
 	{
 		return eCollisionSide::Bottom;
