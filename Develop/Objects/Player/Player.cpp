@@ -200,7 +200,7 @@ void Player::Movement(float delta_second)
 			flip_flag = false;
 			player_state = ePlayerState::MOVE;
 			p_velocity.y = -12.0f;
-			p_velocity.y = p_velocity.x + p_velocity.y;
+			
 		}
 			jpcount =1;
 	}
